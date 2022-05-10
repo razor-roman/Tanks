@@ -8,6 +8,8 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "TankPawn.generated.h"
 
+
+class AMyPlayerController;
 /**
  * 
  */
@@ -16,10 +18,15 @@ class TANKS_API ATankPawn : public ACommonClass
 {
 	GENERATED_BODY()
 public:
+	UPROPERTY()
+	AMyPlayerController* TankController;
 	UPROPERTY(EditAnywhere,Category="Movement|Speed")
-	float MoveSpeed = 100.0f;
+	float MoveSpeed = 1000.0f;
 	UPROPERTY(EditAnywhere,Category="Movement|Speed")
 	float RotationSpeed = 100.0f;
+	UPROPERTY(EditAnywhere,Category="Movement|Speed")
+	float InterpolationKey = 0.1f;
+	float CurrentRightAxisValue;
 	UPROPERTY(BlueprintReadWrite)
 	USpringArmComponent* Arm;
 	UPROPERTY(BlueprintReadWrite)
@@ -29,7 +36,13 @@ public:
 	void Tick(float DeltaTime) override;
 	float _targetForwardAxisValue;
 	float _targetLeftAxisValue;
+	float _targetMouseX;
+	float _targetMouseY;
+	float _targetArrows;
 	UFUNCTION()
 	void MoveForward(float AxisValue);
 	void MoveLeft(float AxisValue);
+	void MouseX(float AxisValue);
+	void MouseY(float AxisValue);
+	void Arrows(float AxisValue);
 };
