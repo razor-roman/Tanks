@@ -27,6 +27,9 @@ public:
 	UPROPERTY(EditAnywhere,Category="Movement|Speed")
 	float InterpolationKey = 0.1f;
 	float CurrentRightAxisValue;
+	UPROPERTY(EditAnywhere)
+	float TurretAngleMax = 45.0f;
+	float TurretAngleMin = -15.0f;
 	UPROPERTY(BlueprintReadWrite)
 	USpringArmComponent* Arm;
 	UPROPERTY(BlueprintReadWrite)
@@ -36,7 +39,11 @@ public:
 	void Tick(float DeltaTime) override;
 	float _targetForwardAxisValue;
 	float _targetLeftAxisValue;
+	float _targetTurn;
+	float _targetLookUp;
 	UFUNCTION()
 	void MoveForward(float AxisValue);
 	void MoveLeft(float AxisValue);
+	void Turn(float AxisValue);
+	void LookUp(float AxisValue);
 };

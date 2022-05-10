@@ -19,7 +19,6 @@ void AMyPlayerController::Tick(float DeltaSeconds)
 
 void AMyPlayerController::BeginPlay()
 {
-	//UE_LOG(LogTemp, Warning, TEXT("AMyPlayerController %f") );
 	Super::BeginPlay();
 	TankPawn = Cast<ATankPawn>(GetPawn());
 	
@@ -35,10 +34,24 @@ void AMyPlayerController::MoveLeftRight(float AxisValue)
 	TankPawn->MoveLeft(AxisValue);
 }
 
+void AMyPlayerController::Turn(float AxisValue)
+{
+	TankPawn->Turn(AxisValue);
+}
+
+void AMyPlayerController::LookUp(float AxisValue)
+{
+	TankPawn->LookUp(AxisValue);
+}
+
+
 
 void AMyPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 	InputComponent->BindAxis("MoveForwardBackward",this,&AMyPlayerController::MoveForward);
 	InputComponent->BindAxis("MoveLeftRight",this,&AMyPlayerController::MoveLeftRight);
+	InputComponent->BindAxis("Turn",this,&AMyPlayerController::Turn);
+	InputComponent->BindAxis("LookUp",this,&AMyPlayerController::LookUp);
+	
 }

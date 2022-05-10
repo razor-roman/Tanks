@@ -9,20 +9,21 @@ ATankPawn::ATankPawn()
 {
 	Arm=CreateDefaultSubobject<USpringArmComponent>(TEXT("Arm"));
 	Arm->bDoCollisionTest = false;
-    Arm->bInheritPitch = false;
-    Arm->bInheritYaw = false;
-    Arm->bInheritRoll = false;
+    //Arm->bInheritPitch = false;
+    //Arm->bInheritYaw = false;
+    //Arm->bInheritRoll = false;
 	Arm->SetupAttachment(Turret);
 	Arm->TargetArmLength = 1200;
-	Arm->SetRelativeRotation(FRotator(-90,0,0));
+	Arm->SetRelativeRotation(FRotator(-20,0,0));
+	
 	Camera=CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(Arm);	
 	Turret->SetRelativeLocation(FVector(-80,0,100));
 	Camera->SetRelativeRotation(FRotator(0,0,0));
-	
+	//Body->SetSimulatePhysics(true);
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> BodyVisualAsset(TEXT("StaticMesh'/Game/CSC/Meshes/SM_TANK_Base1.SM_TANK_Base1'"));
 	if(BodyVisualAsset.Succeeded())
-	{
+	{ 
 		Body->SetStaticMesh(BodyVisualAsset.Object);
 		Body->SetRelativeLocation(FVector(0,0,0));
 	}
@@ -39,26 +40,28 @@ ATankPawn::ATankPawn()
 void ATankPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	UE_LOG(LogTemp, Warning, TEXT("_targetTurn %f"),_targetTurn );
 	
-	FVector currentLocation = GetActorLocation();
+	FVector currentLocation = Body->GetRelativeLocation();
 	FVector forwardVector = GetActorForwardVector();
 	FVector movePosition = currentLocation+forwardVector*MoveSpeed*_targetForwardAxisValue*DeltaTime;
-	SetActorLocation(movePosition,true);
+	Body->SetRelativeLocation(movePosition,true);
 
 	CurrentRightAxisValue = FMath::Lerp(CurrentRightAxisValue,_targetLeftAxisValue,InterpolationKey);
-	FRotator currentRotation = GetActorRotation();
+	FRotator currentRotation = Body->GetRelativeRotation();
 	FRotator rotatePosition=FRotator(0,currentRotation.Yaw+CurrentRightAxisValue*RotationSpeed*DeltaTime,0);
-	SetActorRotation(rotatePosition);
+	Body->SetRelativeRotation(rotatePosition);
 
-	//UE_LOG(LogTemp, Warning, TEXT("_targetArrows = %f "), _targetArrows);
-	//FRotator TurretCurrentRotation= Turret->GetComponentRotation();
-	//Turret->SetWorldRotation(FRotator(0,TurretCurrentRotation.Yaw*DeltaTime*_targetArrows,0));
-	
-	
+	FRotator TurretcurrentRotation = Turret->GetRelativeRotation();
+	float newTurrentRotationPitch= TurretcurrentRotation.Pitch+_targetLookUp*RotationSpeed*DeltaTime;
+	float newTurrentRotationYaw= TurretcurrentRotation.Yaw+_targetTurn*RotationSpeed*DeltaTime;
+	newTurrentRotationPitch = FMath::Clamp(newTurrentRotationPitch,TurretAngleMin,TurretAngleMax);
+	FRotator TurretrotatePosition=FRotator(newTurrentRotationPitch,newTurrentRotationYaw,0);
+	Turret->SetRelativeRotation(TurretrotatePosition);
+
 	if(TankController)
 	{
 		FVector mousePos = TankController->GetMousePos();
-
 	}
 }
 
@@ -70,5 +73,15 @@ void ATankPawn::MoveForward(float AxisValue)
 void ATankPawn::MoveLeft(float AxisValue)
 {
 	_targetLeftAxisValue = AxisValue;
+}
+
+void ATankPawn::Turn(float AxisValue)
+{
+	_targetTurn=AxisValue;
+}
+
+void ATankPawn::LookUp(float AxisValue)
+{
+	_targetLookUp=AxisValue;
 }
 
