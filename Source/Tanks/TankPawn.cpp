@@ -33,6 +33,7 @@ ATankPawn::ATankPawn()
 		Turret->SetStaticMesh(TurretVisualAsset.Object);
 		Turret->SetRelativeLocation(FVector(-80,0,100));
 	}
+	
 }
 
 void ATankPawn::Tick(float DeltaTime)
@@ -49,9 +50,9 @@ void ATankPawn::Tick(float DeltaTime)
 	FRotator rotatePosition=FRotator(0,currentRotation.Yaw+CurrentRightAxisValue*RotationSpeed*DeltaTime,0);
 	SetActorRotation(rotatePosition);
 
-	UE_LOG(LogTemp, Warning, TEXT("_targetArrows = %f "), _targetArrows);
-	FRotator TurretCurrentRotation= Turret->GetComponentRotation();
-	Turret->SetWorldRotation(FRotator(0,TurretCurrentRotation.Yaw*DeltaTime*_targetArrows,0));
+	//UE_LOG(LogTemp, Warning, TEXT("_targetArrows = %f "), _targetArrows);
+	//FRotator TurretCurrentRotation= Turret->GetComponentRotation();
+	//Turret->SetWorldRotation(FRotator(0,TurretCurrentRotation.Yaw*DeltaTime*_targetArrows,0));
 	
 	
 	if(TankController)
@@ -71,18 +72,3 @@ void ATankPawn::MoveLeft(float AxisValue)
 	_targetLeftAxisValue = AxisValue;
 }
 
-void ATankPawn::MouseX(float AxisValue)
-{
-	_targetMouseX=AxisValue;
-		
-}
-
-void ATankPawn::MouseY(float AxisValue)
-{
-	_targetMouseY=AxisValue;
-}
-
-void ATankPawn::Arrows(float AxisValue)
-{
-	_targetArrows=AxisValue;
-}

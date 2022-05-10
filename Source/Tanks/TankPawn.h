@@ -36,13 +36,7 @@ public:
 	void Tick(float DeltaTime) override;
 	float _targetForwardAxisValue;
 	float _targetLeftAxisValue;
-	float _targetMouseX;
-	float _targetMouseY;
-	float _targetArrows;
 	UFUNCTION()
 	void MoveForward(float AxisValue);
 	void MoveLeft(float AxisValue);
-	void MouseX(float AxisValue);
-	void MouseY(float AxisValue);
-	void Arrows(float AxisValue);
 };

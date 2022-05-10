@@ -25,11 +25,8 @@ protected:
 	virtual void BeginPlay() override;
 	void MoveForward(float AxisValue);
 	void MoveLeftRight(float AxisValue);
-	void MouseX(float AxisValue);
-	void MouseY(float AxisValue);
 public:
 	FVector GetMousePos() {return MousePos;};
-	void Arrows(float AxisValue);
 	virtual void SetupInputComponent() override;
 	
 };
