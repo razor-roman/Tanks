@@ -8,10 +8,7 @@
 ATankPawn::ATankPawn()
 {
 	Arm=CreateDefaultSubobject<USpringArmComponent>(TEXT("Arm"));
-	Arm->bDoCollisionTest = false;
-    //Arm->bInheritPitch = false;
-    //Arm->bInheritYaw = false;
-    //Arm->bInheritRoll = false;
+	Arm->bDoCollisionTest = false;    
 	Arm->SetupAttachment(Turret);
 	Arm->TargetArmLength = 1200;
 	Arm->SetRelativeRotation(FRotator(-20,0,0));
@@ -20,7 +17,7 @@ ATankPawn::ATankPawn()
 	Camera->SetupAttachment(Arm);	
 	Turret->SetRelativeLocation(FVector(-80,0,100));
 	Camera->SetRelativeRotation(FRotator(0,0,0));
-	//Body->SetSimulatePhysics(true);
+	Body->SetSimulatePhysics(true);
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> BodyVisualAsset(TEXT("StaticMesh'/Game/CSC/Meshes/SM_TANK_Base1.SM_TANK_Base1'"));
 	if(BodyVisualAsset.Succeeded())
 	{ 
