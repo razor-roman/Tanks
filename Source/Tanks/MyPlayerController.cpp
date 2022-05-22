@@ -4,17 +4,25 @@
 #include "MyPlayerController.h"
 
 #include "DrawDebugHelpers.h"
+#include "Kismet/GameplayStatics.h"
 
 
 AMyPlayerController::AMyPlayerController()
 {
-	
+	bShowMouseCursor = true;
 }
 
 void AMyPlayerController::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
-	
+	FVector mouseDirection;
+	DeprojectMousePositionToWorld(MousePos, mouseDirection);
+	FVector pawnPos = TankPawn->GetActorLocation();
+	MousePos.Z = pawnPos.Z;
+	FVector dir = MousePos - pawnPos;
+	dir.Normalize();
+	MousePos= pawnPos+dir*1000;
+	//DrawDebugLine(GetWorld(), pawnPos, MousePos, FColor::Green, false, 0.1f, 0, 5);
 }
 
 void AMyPlayerController::BeginPlay()
@@ -34,16 +42,10 @@ void AMyPlayerController::MoveLeftRight(float AxisValue)
 	TankPawn->MoveLeft(AxisValue);
 }
 
-void AMyPlayerController::Turn(float AxisValue)
+void AMyPlayerController::Fire()
 {
-	TankPawn->Turn(AxisValue);
+	TankPawn->Fire();
 }
-
-void AMyPlayerController::LookUp(float AxisValue)
-{
-	TankPawn->LookUp(AxisValue);
-}
-
 
 
 void AMyPlayerController::SetupInputComponent()
@@ -51,7 +53,6 @@ void AMyPlayerController::SetupInputComponent()
 	Super::SetupInputComponent();
 	InputComponent->BindAxis("MoveForwardBackward",this,&AMyPlayerController::MoveForward);
 	InputComponent->BindAxis("MoveLeftRight",this,&AMyPlayerController::MoveLeftRight);
-	InputComponent->BindAxis("Turn",this,&AMyPlayerController::Turn);
-	InputComponent->BindAxis("LookUp",this,&AMyPlayerController::LookUp);
+	InputComponent->BindAction("Fire",EInputEvent::IE_Pressed,this,&AMyPlayerController::Fire);
 	
 }

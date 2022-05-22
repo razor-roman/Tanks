@@ -25,8 +25,7 @@ protected:
 	virtual void BeginPlay() override;
 	void MoveForward(float AxisValue);
 	void MoveLeftRight(float AxisValue);
-	void Turn(float AxisValue);
-	void LookUp(float AxisValue);
+	void Fire();
 public:
 	FVector GetMousePos() {return MousePos;};
 	virtual void SetupInputComponent() override;

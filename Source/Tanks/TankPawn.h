@@ -9,7 +9,10 @@
 #include "TankPawn.generated.h"
 
 
+class UArrowComponent;
 class AMyPlayerController;
+class ACannon;
+
 /**
  * 
  */
@@ -25,25 +28,22 @@ public:
 	UPROPERTY(EditAnywhere,Category="Movement|Speed")
 	float RotationSpeed = 100.0f;
 	UPROPERTY(EditAnywhere,Category="Movement|Speed")
-	float InterpolationKey = 0.1f;
-	float CurrentRightAxisValue;
+	float InterpolationKey = 0.03f;
+	float TurretRotationInterpolationKey=0.1f;
 	UPROPERTY(EditAnywhere)
-	float TurretAngleMax = 45.0f;
-	float TurretAngleMin = -15.0f;
-	UPROPERTY(BlueprintReadWrite)
 	USpringArmComponent* Arm;
-	UPROPERTY(BlueprintReadWrite)
-	UCameraComponent* Camera;
-public:
+	UPROPERTY(EditAnywhere)
+	UCameraComponent* Camera;	
 	ATankPawn();
 	void Tick(float DeltaTime) override;
 	float _targetForwardAxisValue;
 	float _targetLeftAxisValue;
-	float _targetTurn;
-	float _targetLookUp;
-	UFUNCTION()
+	float interpolatedYaw;
 	void MoveForward(float AxisValue);
 	void MoveLeft(float AxisValue);
-	void Turn(float AxisValue);
-	void LookUp(float AxisValue);
+	void RotateTurretTo(FVector TargetPosition);
+	void Fire();
+protected:
+	virtual void BeginPlay() override;
+
 };

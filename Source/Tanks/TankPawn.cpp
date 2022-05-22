@@ -4,20 +4,27 @@
 #include "TankPawn.h"
 
 #include "MyPlayerController.h"
+#include "Components/ArrowComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 
 ATankPawn::ATankPawn()
 {
-	Arm=CreateDefaultSubobject<USpringArmComponent>(TEXT("Arm"));
-	Arm->bDoCollisionTest = false;    
-	Arm->SetupAttachment(Turret);
-	Arm->TargetArmLength = 1200;
-	Arm->SetRelativeRotation(FRotator(-20,0,0));
 	
+	Arm=CreateDefaultSubobject<USpringArmComponent>(TEXT("Arm"));
+	Arm->bDoCollisionTest = false;
+	Arm->bInheritPitch=false;
+	Arm->bInheritRoll=false;
+	Arm->bInheritYaw=false;
+	Arm->SetupAttachment(RootComponent);
+	Arm->TargetArmLength = 3000;
+	Arm->SetRelativeRotation(FRotator(-90,0,0));
+		
 	Camera=CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
-	Camera->SetupAttachment(Arm);	
+	Camera->SetupAttachment(Arm);
+	
 	Turret->SetRelativeLocation(FVector(-80,0,100));
 	Camera->SetRelativeRotation(FRotator(0,0,0));
-	Body->SetSimulatePhysics(true);
+	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> BodyVisualAsset(TEXT("StaticMesh'/Game/CSC/Meshes/SM_TANK_Base1.SM_TANK_Base1'"));
 	if(BodyVisualAsset.Succeeded())
 	{ 
@@ -37,29 +44,28 @@ ATankPawn::ATankPawn()
 void ATankPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	UE_LOG(LogTemp, Warning, TEXT("_targetTurn %f"),_targetTurn );
+	//UE_LOG(LogTemp, Warning, TEXT("_targetTurn %f"),_targetTurn );
 	
 	FVector currentLocation = Body->GetRelativeLocation();
 	FVector forwardVector = GetActorForwardVector();
 	FVector movePosition = currentLocation+forwardVector*MoveSpeed*_targetForwardAxisValue*DeltaTime;
 	Body->SetRelativeLocation(movePosition,true);
 
-	CurrentRightAxisValue = FMath::Lerp(CurrentRightAxisValue,_targetLeftAxisValue,InterpolationKey);
-	FRotator currentRotation = Body->GetRelativeRotation();
-	FRotator rotatePosition=FRotator(0,currentRotation.Yaw+CurrentRightAxisValue*RotationSpeed*DeltaTime,0);
-	Body->SetRelativeRotation(rotatePosition);
-
-	FRotator TurretcurrentRotation = Turret->GetRelativeRotation();
-	float newTurrentRotationPitch= TurretcurrentRotation.Pitch+_targetLookUp*RotationSpeed*DeltaTime;
-	float newTurrentRotationYaw= TurretcurrentRotation.Yaw+_targetTurn*RotationSpeed*DeltaTime;
-	newTurrentRotationPitch = FMath::Clamp(newTurrentRotationPitch,TurretAngleMin,TurretAngleMax);
-	FRotator TurretrotatePosition=FRotator(newTurrentRotationPitch,newTurrentRotationYaw,0);
-	Turret->SetRelativeRotation(TurretrotatePosition);
-
+	//interpolatedYaw = FMath::Lerp(interpolatedYaw,_targetLeftAxisValue,InterpolationKey);
+	float yawRotation = RotationSpeed * _targetLeftAxisValue * DeltaTime;
+	FRotator bodyCurrentRotation = Body->GetRelativeRotation();	
+	float bodyRotation = bodyCurrentRotation.Yaw+yawRotation;	
+	Body->SetRelativeRotation(FRotator(0,bodyRotation,0));
 	if(TankController)
 	{
-		FVector mousePos = TankController->GetMousePos();
+		RotateTurretTo(TankController->GetMousePos());			
 	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("NO CONTROLLER"));
+	}
+	
+	
 }
 
 void ATankPawn::MoveForward(float AxisValue)
@@ -72,13 +78,25 @@ void ATankPawn::MoveLeft(float AxisValue)
 	_targetLeftAxisValue = AxisValue;
 }
 
-void ATankPawn::Turn(float AxisValue)
+void ATankPawn::RotateTurretTo(FVector TargetPosition)
 {
-	_targetTurn=AxisValue;
+	FRotator targetRotation = UKismetMathLibrary::FindLookAtRotation(Turret->GetComponentLocation(), TargetPosition);
+	FRotator currRotation = Turret->GetComponentRotation();
+	targetRotation.Pitch = currRotation.Pitch;
+	targetRotation.Roll = currRotation.Roll;
+	Turret->SetWorldRotation(FMath::Lerp(currRotation, targetRotation, TurretRotationInterpolationKey));
+
 }
 
-void ATankPawn::LookUp(float AxisValue)
+void ATankPawn::Fire()
 {
-	_targetLookUp=AxisValue;
+	
 }
+
+void ATankPawn::BeginPlay()
+{
+	Super::BeginPlay();
+	TankController=Cast<AMyPlayerController>(GetController());
+}
+
 
