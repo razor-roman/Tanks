@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "Cannon.h"
 #include "CoreMinimal.h"
 #include "CommonClass.h"
 #include "Camera/CameraComponent.h"
@@ -43,7 +44,17 @@ public:
 	void MoveLeft(float AxisValue);
 	void RotateTurretTo(FVector TargetPosition);
 	void Fire();
+	void FireSpecial();
 protected:
 	virtual void BeginPlay() override;
+	
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
+	UArrowComponent * CannonSetupPoint;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Turret|Cannon")
+	TSubclassOf<ACannon> CannonClass;
+	UPROPERTY()
+	ACannon * Cannon;
+	void SetupCannon();
+	
 };

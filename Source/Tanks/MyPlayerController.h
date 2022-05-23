@@ -26,6 +26,7 @@ protected:
 	void MoveForward(float AxisValue);
 	void MoveLeftRight(float AxisValue);
 	void Fire();
+	void FireSpecial();
 public:
 	FVector GetMousePos() {return MousePos;};
 	virtual void SetupInputComponent() override;

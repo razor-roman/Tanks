@@ -47,6 +47,11 @@ void AMyPlayerController::Fire()
 	TankPawn->Fire();
 }
 
+void AMyPlayerController::FireSpecial()
+{
+	TankPawn->FireSpecial();
+}
+
 
 void AMyPlayerController::SetupInputComponent()
 {
@@ -54,5 +59,6 @@ void AMyPlayerController::SetupInputComponent()
 	InputComponent->BindAxis("MoveForwardBackward",this,&AMyPlayerController::MoveForward);
 	InputComponent->BindAxis("MoveLeftRight",this,&AMyPlayerController::MoveLeftRight);
 	InputComponent->BindAction("Fire",EInputEvent::IE_Pressed,this,&AMyPlayerController::Fire);
+	InputComponent->BindAction("AlternativeFire",EInputEvent::IE_Pressed,this,&AMyPlayerController::FireSpecial);
 	
 }

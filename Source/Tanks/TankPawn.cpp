@@ -24,6 +24,9 @@ ATankPawn::ATankPawn()
 	
 	Turret->SetRelativeLocation(FVector(-80,0,100));
 	Camera->SetRelativeRotation(FRotator(0,0,0));
+
+	CannonSetupPoint = CreateDefaultSubobject<UArrowComponent>(TEXT("Cannon setup point"));
+	CannonSetupPoint->AttachToComponent(Turret, FAttachmentTransformRules::KeepRelativeTransform);
 	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> BodyVisualAsset(TEXT("StaticMesh'/Game/CSC/Meshes/SM_TANK_Base1.SM_TANK_Base1'"));
 	if(BodyVisualAsset.Succeeded())
@@ -90,13 +93,34 @@ void ATankPawn::RotateTurretTo(FVector TargetPosition)
 
 void ATankPawn::Fire()
 {
+	Cannon->Fire();
+}
+
+void ATankPawn::FireSpecial()
+{
 	
+	Cannon->FireSpecial();
 }
 
 void ATankPawn::BeginPlay()
 {
 	Super::BeginPlay();
 	TankController=Cast<AMyPlayerController>(GetController());
+	SetupCannon();	
+}
+
+void ATankPawn::SetupCannon()
+{
+	if(Cannon)
+	{
+		Cannon->Destroy();
+	}
+	FActorSpawnParameters params;
+	params.Instigator = this;
+	params.Owner = this;
+	Cannon = GetWorld()->SpawnActor<ACannon>(CannonClass, params);
+	Cannon->AttachToComponent(CannonSetupPoint,
+	FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 }
 
 
