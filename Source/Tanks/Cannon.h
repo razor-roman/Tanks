@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameStructs.h"
+#include "Projectile.h"
 #include "GameFramework/Actor.h"
 #include "Cannon.generated.h"
 
@@ -37,8 +38,12 @@ protected:
 	ECannonType Type = ECannonType::FireProjectile;
 	FTimerHandle ReloadTimerHandle;
 	bool ReadyToFire = false;
+public:	
 	UPROPERTY(EditAnywhere)
-	float ShotCount=10;
+	float ProjectileCount=10;
+	UPROPERTY(EditAnywhere)
+	float TraceCount=10;
+protected:
 	UPROPERTY(EditAnywhere)
 	float ProjectileAuto=3;
 	float tempProjectileAuto;
@@ -47,10 +52,21 @@ public:
 	void FireSpecial();
 	bool IsReadyToFire();
 	void MultiShot();
+	void AddProjectile(float count);
+	void AddTrace(float count);
+	/*ACannon operator+ (ACannon const lhs, ACannon const rhs) {
+		ACannon Tmp;
+		Tmp.ProjectileCount += rhs.ProjectileCount;
+		return Tmp;
+	}*/
 protected:
 	void Reload();
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+protected:
+	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="Fire params")
+	TSubclassOf<AProjectile> ProjectileClass;
+	
 
 };

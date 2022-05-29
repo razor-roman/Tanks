@@ -27,6 +27,7 @@ protected:
 	void MoveLeftRight(float AxisValue);
 	void Fire();
 	void FireSpecial();
+	void ChangeWeapon();
 public:
 	FVector GetMousePos() {return MousePos;};
 	virtual void SetupInputComponent() override;

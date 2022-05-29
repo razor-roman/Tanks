@@ -15,7 +15,7 @@ ATankPawn::ATankPawn()
 	Arm->bInheritPitch=false;
 	Arm->bInheritRoll=false;
 	Arm->bInheritYaw=false;
-	Arm->SetupAttachment(RootComponent);
+	Arm->SetupAttachment(Body);
 	Arm->TargetArmLength = 3000;
 	Arm->SetRelativeRotation(FRotator(-90,0,0));
 		
@@ -26,8 +26,7 @@ ATankPawn::ATankPawn()
 	Camera->SetRelativeRotation(FRotator(0,0,0));
 
 	CannonSetupPoint = CreateDefaultSubobject<UArrowComponent>(TEXT("Cannon setup point"));
-	CannonSetupPoint->AttachToComponent(Turret, FAttachmentTransformRules::KeepRelativeTransform);
-	
+	CannonSetupPoint->AttachToComponent(Turret,FAttachmentTransformRules::KeepRelativeTransform);
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> BodyVisualAsset(TEXT("StaticMesh'/Game/CSC/Meshes/SM_TANK_Base1.SM_TANK_Base1'"));
 	if(BodyVisualAsset.Succeeded())
 	{ 
@@ -106,21 +105,49 @@ void ATankPawn::BeginPlay()
 {
 	Super::BeginPlay();
 	TankController=Cast<AMyPlayerController>(GetController());
-	SetupCannon();	
+	SetupCannon(FirstCannon);
 }
 
-void ATankPawn::SetupCannon()
-{
+void ATankPawn::SetupCannon(TSubclassOf<ACannon> cannon)
+{	
+	if(FirstCannon==NULL)
+	{		
+		FirstCannon=cannon;
+		UE_LOG(LogTemp, Warning, TEXT("FirstCannon %f"),SecondCannon.GetDefaultObject());
+	}
+	else if(cannon!=FirstCannon)
+	{		
+		SecondCannon=cannon;
+		UE_LOG(LogTemp, Warning, TEXT("SecondCannon %f"),FirstCannon.GetDefaultObject());
+	}
 	if(Cannon)
 	{
-		Cannon->Destroy();
-	}
+		Cannon->Destroy();		
+	}	
 	FActorSpawnParameters params;
 	params.Instigator = this;
 	params.Owner = this;
-	Cannon = GetWorld()->SpawnActor<ACannon>(CannonClass, params);
-	Cannon->AttachToComponent(CannonSetupPoint,
-	FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+	Cannon = GetWorld()->SpawnActor<ACannon>(cannon, params);	
+	Cannon->AttachToComponent(CannonSetupPoint,FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+}
+
+void ATankPawn::ChangeWeapon()
+{
+	if(first==true)
+	{
+		first=false;
+		UE_LOG(LogTemp, Warning, TEXT("ChangeWeapon SecondCannon %f"));
+		SetupCannon(SecondCannon);
+		return;
+	}
+	if(first==false)
+	{
+		first=true;
+		UE_LOG(LogTemp, Warning, TEXT(" ChangeWeapon FirstCannon %f"));
+		SetupCannon(FirstCannon);
+		return;
+	}
+	
 }
 
 
