@@ -7,11 +7,8 @@
 
 ATurret::ATurret()
 {
-	CannonSetupPoint = CreateDefaultSubobject<UArrowComponent>(TEXT("SETUP_POINT"));
-	HitCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("COLLIDER"));
+	CannonSetupPoint = CreateDefaultSubobject<UArrowComponent>(TEXT("SETUP_POINT"));	
 	CannonSetupPoint->SetupAttachment(Turret);
-	HitCollider->SetupAttachment(RootComponent);
-	
 }
 
 void ATurret::BeginPlay()
@@ -40,7 +37,7 @@ void ATurret::Targeting()
 	{
 		RotateToPlayer();
 	}
-	if(CanFire() && Cannon && Cannon->IsReadyToFire())
+	if(CanFire() && Cannon && Cannon->IsReadyToFire() && IsPlayerInRange())
 	{
 		Fire();
 	}
@@ -67,6 +64,7 @@ bool ATurret::CanFire()
 	FVector dirToPlayer = PlayerPawn->GetActorLocation() - GetActorLocation();
 	dirToPlayer.Normalize();
 	float aimAngle =  FMath::RadiansToDegrees(acosf(FVector::DotProduct(targetingDir,dirToPlayer)));
+	//UE_LOG(LogTemp, Warning, TEXT("aimAngle %f"),aimAngle );
 	return aimAngle <= Accurency;
 }
 
@@ -75,3 +73,4 @@ void ATurret::Fire()
 	if(Cannon)
 		Cannon->Fire();
 }
+

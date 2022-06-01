@@ -5,6 +5,8 @@
 #include "CoreMinimal.h"
 #include "Cannon.h"
 #include "CommonClass.h"
+#include "DamageTaker.h"
+#include "HealthComponent.h"
 #include "TankPawn.h"
 #include "Components/ArrowComponent.h"
 #include "Components/BoxComponent.h"
@@ -15,16 +17,16 @@
  */
 UCLASS()
 class TANKS_API ATurret : public ACommonClass
-{
-	
+{	
 	GENERATED_BODY()
 	ATurret();
 protected:
 	UPROPERTY(EditAnywhere)
 	UArrowComponent* CannonSetupPoint;
-	UPROPERTY(EditAnywhere)
-	UBoxComponent* HitCollider;
-
+	
+	
+public:
+	
 	UPROPERTY()
 	ACannon* Cannon;
 	UPROPERTY(EditAnywhere)
@@ -48,6 +50,6 @@ protected:
 	bool IsPlayerInRange();
 	bool CanFire();
 	void Fire();
-	
+
 	
 };

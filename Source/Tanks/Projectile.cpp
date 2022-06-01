@@ -3,6 +3,8 @@
 
 #include "Projectile.h"
 
+#include "DamageTaker.h"
+
 // Sets default values
 AProjectile::AProjectile()
 {
@@ -51,7 +53,24 @@ void AProjectile::OnMeshOverlapBegin(class UPrimitiveComponent* OverlappedComp, 
 {
 	
 	UE_LOG(LogTemp,Warning,TEXT("Projectile %s collide with %s."),*GetName(),*OtherActor->GetName());
-	OtherActor->Destroy();
-	Destroy();
+	AActor* owner = GetOwner();
+	AActor* ownerByOwner = owner != nullptr? owner->GetOwner() : nullptr;
+	if(OtherActor!= owner && OtherActor!=ownerByOwner)
+	{
+		IDamageTaker * damageTakerActor = Cast<IDamageTaker>(OtherActor);
+		if(damageTakerActor)
+		{
+			FDamageData damageData;
+			damageData.DamageValue = Damage;
+			damageData.Instigator = owner;
+			damageData.DamageMaker = this;
+			damageTakerActor->TakeDamage(damageData);
+		}
+		else
+		{
+			OtherActor->Destroy();
+		}
+		Destroy();
+	}
 }
 

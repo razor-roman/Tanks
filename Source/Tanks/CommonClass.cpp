@@ -10,9 +10,16 @@ ACommonClass::ACommonClass()
 	PrimaryActorTick.bCanEverTick = true;
 	Body=CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Body"));
 	Turret=CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Turret"));
+	HitCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("COLLIDER"));
+	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("HEALTH"));
+	
 	RootComponent=Body;
 	Body->SetupAttachment(RootComponent);
 	Turret->SetupAttachment(Body);
+	HitCollider->SetupAttachment(RootComponent);
+	
+	HealthComponent->OnDie.AddUObject(this,&ACommonClass::Die);
+	HealthComponent->OnDamaged.AddUObject(this,&ACommonClass::DamageTaked);
 	
 }
 
@@ -34,5 +41,22 @@ void ACommonClass::Tick(float DeltaTime)
 void ACommonClass::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+}
+
+void ACommonClass::Die()
+{
+	Destroy();
+}
+
+void ACommonClass::DamageTaked(float DamageValue)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Turret %s taked damage:%f Health:%f"), *GetName(),
+DamageValue, HealthComponent->GetHealth());
+}
+
+void ACommonClass::TakeDamage(FDamageData DamageData)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Turret %s taked damage:%f "), *GetName(),DamageData.DamageValue);
+	HealthComponent->TakeDamage(DamageData);
 }
 
