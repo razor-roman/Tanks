@@ -34,6 +34,8 @@ protected:
 	float FireRange = 1000;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Fire params")
 	float FireDamage = 1;
+	UPROPERTY(VisibleDefaultsOnly,BlueprintReadWrite,Category="Movement|Speed")
+	float TraceDamage = 1;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Fire params")
 	ECannonType Type = ECannonType::FireProjectile;
 	FTimerHandle ReloadTimerHandle;

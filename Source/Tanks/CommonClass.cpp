@@ -45,6 +45,7 @@ void ACommonClass::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 void ACommonClass::Die()
 {
+	
 	Destroy();
 }
 
@@ -58,5 +59,10 @@ void ACommonClass::TakeDamage(FDamageData DamageData)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Turret %s taked damage:%f "), *GetName(),DamageData.DamageValue);
 	HealthComponent->TakeDamage(DamageData);
+}
+
+void ACommonClass::ScoreUp(float Score)
+{
+	ScoreNumber+=Score;
 }
 

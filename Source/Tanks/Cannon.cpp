@@ -5,6 +5,7 @@
 
 #include <Actor.h>
 
+#include "DamageTaker.h"
 #include "DrawDebugHelpers.h"
 #include "Components/ArrowComponent.h"
 
@@ -56,7 +57,7 @@ void ACannon::Fire()
 		}
 		ProjectileCount--;
 	}
-	if (Type == ECannonType::FireTrace)
+	if(Type == ECannonType::FireTrace)
 	{
 		FHitResult HitResult;
 		FCollisionQueryParams traceParams=FCollisionQueryParams(FName(TEXT("FireTrace")),
@@ -66,28 +67,45 @@ void ACannon::Fire()
 		FVector start = ProjectileSpawnPoint->GetComponentLocation();
 		FVector end = ProjectileSpawnPoint->GetForwardVector()*FireRange+start;
 		if(GetWorld()->LineTraceSingleByChannel(HitResult, start, end,
-        ECollisionChannel::ECC_Visibility, traceParams))
-	        {
-		        DrawDebugLine(GetWorld(), start, HitResult.Location, FColor::Red, false,
-		        0.5f, 0, 5);
-		        if(HitResult.Actor.Get())
-			        {
-			        HitResult.Actor.Get()->Destroy();
-			        }
-	        }
-        else
-	        {
-	        DrawDebugLine(GetWorld(), start, end, FColor::Red, false, 0.5f, 0, 5);
-	        }
-		TraceCount--;
-	}
-	if (Type==ECannonType::FireProjectileAuto)
-	{
-		GetWorld()->GetTimerManager().SetTimer(ReloadTimerHandle, this, &ACannon::MultiShot, 1 / FireRateAuto, true,0);
-		ProjectileCount--;
+		ECollisionChannel::ECC_Visibility, traceParams))
+		{
+			DrawDebugLine(GetWorld(), start, HitResult.Location, FColor::Red, false,
+			0.5f, 0, 5);		        
+			AActor* OtherActor = HitResult.Actor.Get();
+			UE_LOG(LogTemp,Warning,TEXT("Trace %s collide with %s."),*GetName(),*OtherActor->GetName());
+			AActor* owner = GetOwner();
+			AActor* ownerByOwner = owner != nullptr? owner->GetOwner() : nullptr;
+			if(OtherActor!= owner && OtherActor!=ownerByOwner)
+			{
+				IDamageTaker * damageTakerActor = Cast<IDamageTaker>(OtherActor);
+				if(damageTakerActor)
+				{
+					FDamageData damageData;
+					damageData.DamageValue = TraceDamage;
+					damageData.Instigator = owner;
+					damageData.DamageMaker = this;
+					damageTakerActor->TakeDamage(damageData);
+				}
+				else
+				{
+					HitResult.Actor.Get()->Destroy();
+				}
+			}
+			else
+			{
+				DrawDebugLine(GetWorld(), start, end, FColor::Red, false, 0.5f, 0, 5);
+			}
+			TraceCount--;
+		}
+		if (Type==ECannonType::FireProjectileAuto)
+		{
+			GetWorld()->GetTimerManager().SetTimer(ReloadTimerHandle, this, &ACannon::MultiShot, 1 / FireRateAuto, true,0);
+			ProjectileCount--;
+		}
 	}
 	UE_LOG(LogTemp, Warning, TEXT("ProjectileCount= %f, TraceCount= %f "), ProjectileCount,TraceCount);
 	GetWorld()->GetTimerManager().SetTimer(ReloadTimerHandle, this, &ACannon::Reload, 1 / FireRate, false);
+	
 }
 
 void ACannon::FireSpecial()

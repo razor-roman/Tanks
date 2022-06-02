@@ -36,3 +36,12 @@ struct FDamageData
 	UPROPERTY()
 	AActor* DamageMaker;
 };
+
+USTRUCT()
+struct FScoreData
+{
+	GENERATED_BODY()
+	UPROPERTY()
+	float Turret=50;
+	float Tank=100;
+};

@@ -5,12 +5,13 @@
 #include "CoreMinimal.h"
 #include "DamageTaker.h"
 #include "HealthComponent.h"
+#include "IScorable.h"
 #include "Components/BoxComponent.h"
 #include "GameFramework/Pawn.h"
 #include "CommonClass.generated.h"
 
 UCLASS()
-class TANKS_API ACommonClass : public APawn, public IDamageTaker
+class TANKS_API ACommonClass : public APawn, public IDamageTaker, public IIScorable 
 {
 	GENERATED_BODY()
 
@@ -25,7 +26,9 @@ protected:
 	UBoxComponent* HitCollider;
 	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="Components")
 	UHealthComponent* HealthComponent;
-	float Health=1;	
+	float Health=1;
+	UPROPERTY()
+	float ScoreNumber=0;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -43,4 +46,5 @@ public:
 	void DamageTaked(float DamageValue);
 public:
 	virtual void TakeDamage(FDamageData DamageData) override;
+	virtual void ScoreUp(float Score) override;
 };
