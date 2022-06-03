@@ -44,7 +44,7 @@ ATankPawn::ATankPawn()
 void ATankPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	RotateTurretTo(TankController->GetMousePos());
+	if (TankController) RotateTurretTo(TankController->GetMousePos());
 	MovePawn(DeltaTime);
 	RotatePawn(DeltaTime);
 }

@@ -14,10 +14,7 @@ ATurret::ATurret()
 void ATurret::BeginPlay()
 {
 	Super::BeginPlay();
-	FActorSpawnParameters params;
-	params.Owner=this;
-	Cannon = GetWorld()->SpawnActor<ACannon>(CannonClass,params);
-	Cannon->AttachToComponent(CannonSetupPoint,FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+	SetupCannon(CannonClass);
 	PlayerPawn = GetWorld()->GetFirstPlayerController()->GetPawn();
 	FTimerHandle _targetingTimerHandle;
 	GetWorld()->GetTimerManager().SetTimer(_targetingTimerHandle,this,&ATurret::Targeting,TargetingRate,true,TargetingRate);

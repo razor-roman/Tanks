@@ -15,7 +15,7 @@ class TANKS_API ATankAIController : public AAIController
 {
 	GENERATED_BODY()
 	UPROPERTY()
-	ACommonClass* TankPawn;
+	ATankPawn* TankPawn;
 	UPROPERTY()
 	APawn * PlayerPawn;
 protected:
