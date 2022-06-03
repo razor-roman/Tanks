@@ -2,9 +2,6 @@
 
 #pragma once
 
-#include <array>
-#include <vector>
-
 #include "Cannon.h"
 #include "CoreMinimal.h"
 #include "CommonClass.h"
@@ -26,26 +23,19 @@ class TANKS_API ATankPawn : public ACommonClass
 	GENERATED_BODY()
 public:
 	UPROPERTY()
-	AMyPlayerController* TankController;
-	UPROPERTY(EditAnywhere,Category="Movement|Speed")
-	float MoveSpeed = 1000.0f;
-	UPROPERTY(EditAnywhere,Category="Movement|Speed")
-	float RotationSpeed = 100.0f;
-	
-	
+	AMyPlayerController* TankController;	
 	UPROPERTY(EditAnywhere)
 	USpringArmComponent* Arm;
 	UPROPERTY(EditAnywhere)
 	UCameraComponent* Camera;	
 	ATankPawn();
-	void Tick(float DeltaTime) override;
-	
 	float interpolatedYaw;
 	void FireSpecial();
-	void SetupCannon(TSubclassOf<ACannon> cannon);
 	void ChangeWeapon();
 protected:
 	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaTime) override;
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Turret|Cannon")
 	TSubclassOf<ACannon> FirstCannon;
 	UPROPERTY()

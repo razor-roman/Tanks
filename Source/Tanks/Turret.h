@@ -28,7 +28,6 @@ protected:
 	void RotateToPlayer();
 	bool IsPlayerInRange();
 	bool CanFire();
-	void Fire();
 
 	
 };

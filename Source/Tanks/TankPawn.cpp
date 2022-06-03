@@ -44,27 +44,9 @@ ATankPawn::ATankPawn()
 void ATankPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	
-	FVector currentLocation = Body->GetRelativeLocation();
-	FVector forwardVector = GetActorForwardVector();
-	FVector movePosition = currentLocation+forwardVector*MoveSpeed*_targetForwardAxisValue*DeltaTime;
-	Body->SetRelativeLocation(movePosition,true);
-
-	//interpolatedYaw = FMath::Lerp(interpolatedYaw,_targetLeftAxisValue,InterpolationKey);
-	float yawRotation = RotationSpeed * _targetLeftAxisValue * DeltaTime;
-	FRotator bodyCurrentRotation = Body->GetRelativeRotation();	
-	float bodyRotation = bodyCurrentRotation.Yaw+yawRotation;	
-	Body->SetRelativeRotation(FRotator(0,bodyRotation,0));
-	if(TankController)
-	{
-		RotateTurretTo(TankController->GetMousePos());			
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("NO CONTROLLER"));
-	}
-	
-	
+	RotateTurretTo(TankController->GetMousePos());
+	MovePawn(DeltaTime);
+	RotatePawn(DeltaTime);
 }
 
 void ATankPawn::FireSpecial()
@@ -77,29 +59,6 @@ void ATankPawn::BeginPlay()
 	Super::BeginPlay();
 	TankController=Cast<AMyPlayerController>(GetController());
 	SetupCannon(FirstCannon);
-}
-
-void ATankPawn::SetupCannon(TSubclassOf<ACannon> cannon)
-{	
-	if(FirstCannon==NULL)
-	{		
-		FirstCannon=cannon;
-		UE_LOG(LogTemp, Warning, TEXT("FirstCannon %f"),SecondCannon.GetDefaultObject());
-	}
-	else if(cannon!=FirstCannon)
-	{		
-		SecondCannon=cannon;
-		UE_LOG(LogTemp, Warning, TEXT("SecondCannon %f"),FirstCannon.GetDefaultObject());
-	}
-	if(Cannon)
-	{
-		Cannon->Destroy();		
-	}	
-	FActorSpawnParameters params;
-	params.Instigator = this;
-	params.Owner = this;
-	Cannon = GetWorld()->SpawnActor<ACannon>(cannon, params);	
-	Cannon->AttachToComponent(CannonSetupPoint,FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 }
 
 void ATankPawn::ChangeWeapon()
@@ -117,8 +76,8 @@ void ATankPawn::ChangeWeapon()
 		UE_LOG(LogTemp, Warning, TEXT(" ChangeWeapon FirstCannon %f"));
 		SetupCannon(FirstCannon);
 		return;
-	}
-	
+	}	
 }
+
 
 

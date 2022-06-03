@@ -67,9 +67,3 @@ bool ATurret::CanFire()
 	//UE_LOG(LogTemp, Warning, TEXT("aimAngle %f"),aimAngle );
 	return aimAngle <= Accurency;
 }
-
-void ATurret::Fire()
-{
-	if(Cannon)
-		Cannon->Fire();
-}

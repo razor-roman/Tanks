@@ -60,7 +60,11 @@ public:
 	virtual void ScoreUp(float Score) override;
 	void MoveForward(float AxisValue);
 	void MoveLeft(float AxisValue);
+	void MovePawn(float DeltaTime);
+	void RotatePawn(float DeltaTime);
 	void Fire();
+	void SetupCannon(TSubclassOf<ACannon> cannon);
+	
 	UFUNCTION()
 	void RotateTurretTo(FVector TargetPosition);
 protected:
@@ -69,6 +73,10 @@ protected:
 	UPROPERTY(EditAnywhere,Category="Movement|Speed")
 	float InterpolationKey = 0.03f;
 	float TurretRotationInterpolationKey=0.1f;
+	UPROPERTY(EditAnywhere,Category="Movement|Speed")
+	float MoveSpeed = 1000.0f;
+	UPROPERTY(EditAnywhere,Category="Movement|Speed")
+	float RotationSpeed = 100.0f;
 //AI
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI|Move params|Patrol points" , Meta = (MakeEditWidget = true))
