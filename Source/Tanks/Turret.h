@@ -25,23 +25,10 @@ protected:
 	UArrowComponent* CannonSetupPoint;
 	
 	
-public:
-	
-	UPROPERTY()
-	ACannon* Cannon;
+public:	
 	UPROPERTY(EditAnywhere)
-	TSubclassOf<ACannon> CannonClass;
-	UPROPERTY()
-	APawn* PlayerPawn;
+	TSubclassOf<ACannon> CannonClass;	
 	
-	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Targeting")
-	float TargetingRange=1000;
-	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Targeting")
-	float TargetingSpeed=0.1f;
-	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Targeting")
-	float TargetingRate=0.005f;
-	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Targeting")
-	float Accurency=10;
 protected:
 	void BeginPlay() override;
 	void Destroyed() override;

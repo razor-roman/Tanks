@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Cannon.h"
 #include "DamageTaker.h"
 #include "HealthComponent.h"
 #include "IScorable.h"
@@ -40,6 +41,11 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 public:
+	UPROPERTY()
+	ACannon* Cannon;
+	UPROPERTY()
+	APawn* PlayerPawn;
+	
 	UFUNCTION()
 	void Die();
 	UFUNCTION()
@@ -47,4 +53,20 @@ public:
 public:
 	virtual void TakeDamage(FDamageData DamageData) override;
 	virtual void ScoreUp(float Score) override;
+//AI
+protected:
+	void Targeting();
+	void RotateToPlayer();
+	bool IsPlayerInRange();
+	bool CanFire();
+	virtual void Fire();
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Targeting")
+	float TargetingRange=1000;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Targeting")
+	float TargetingSpeed=0.1f;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Targeting")
+	float TargetingRate=0.005f;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Targeting")
+	float Accurency=10;
 };

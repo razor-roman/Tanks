@@ -2,12 +2,11 @@
 
 
 #include "Cannon.h"
-
-#include <Actor.h>
-
 #include "DamageTaker.h"
 #include "DrawDebugHelpers.h"
 #include "Components/ArrowComponent.h"
+#include "Components/AudioComponent.h"
+#include "Particles/ParticleSystemComponent.h"
 
 // Sets default values
 ACannon::ACannon()
@@ -18,10 +17,14 @@ ACannon::ACannon()
 	CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 	RootComponent = sceeneCpm;
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Cannon mesh"));
-	Mesh->SetupAttachment(RootComponent);
+	ShootEffect = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("ShootEffect"));
+	AudioEffect = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioEffect"));
 	ProjectileSpawnPoint = CreateDefaultSubobject<UArrowComponent>(TEXT("Spawn 	point"));
+	
 	ProjectileSpawnPoint->SetupAttachment(Mesh);
-
+	Mesh->SetupAttachment(RootComponent);
+	ShootEffect->SetupAttachment(ProjectileSpawnPoint);
+	AudioEffect->SetupAttachment(Mesh);
 }
 
 // Called when the game starts or when spawned
@@ -38,9 +41,24 @@ void ACannon::Fire()
 	{
 		return;
 	}
-	if(ProjectileCount<=0 && TraceCount<=0) return;
-	
+	if(ProjectileCount<=0 && TraceCount<=0) return;	
 	ReadyToFire = false;
+	ShootEffect->ActivateSystem();
+    AudioEffect->Play();
+	if(GetOwner()&&GetOwner()==GetWorld()->GetFirstPlayerController()->GetPawn())
+	{
+		if(ShootForceEffect)
+		{
+			FForceFeedbackParameters shootForceEffectParams;
+			shootForceEffectParams.bLooping = false;
+			shootForceEffectParams.Tag = "shootForceEffectParams";
+		GetWorld()->GetFirstPlayerController()->ClientPlayForceFeedback(ShootForceEffect,shootForceEffectParams);
+		}
+		if(ShootShake)
+		{
+			GetWorld()->GetFirstPlayerController()->ClientStartCameraShake(ShootShake);
+		}
+	}
 	if(Type == ECannonType::FireProjectile)
 	{
 		GEngine->AddOnScreenDebugMessage(10, 1,FColor::Green, "Fire -	projectile");

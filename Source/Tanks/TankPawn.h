@@ -39,14 +39,14 @@ public:
 	UPROPERTY(EditAnywhere)
 	UCameraComponent* Camera;	
 	ATankPawn();
-	UPROPERTY()
-	ACannon* Cannon;
 	void Tick(float DeltaTime) override;
 	float _targetForwardAxisValue;
 	float _targetLeftAxisValue;
 	float interpolatedYaw;
 	void MoveForward(float AxisValue);
 	void MoveLeft(float AxisValue);
+	
+	UFUNCTION()
 	void RotateTurretTo(FVector TargetPosition);
 	void Fire();
 	void FireSpecial();
@@ -63,4 +63,27 @@ protected:
 	UPROPERTY()
 	TSubclassOf<ACannon> SecondCannon;
 	bool first=true;
+//AI
+protected:
+	
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI|Move params|Patrol points" , Meta = (MakeEditWidget = true))
+    TArray<FVector> PatrollingPoints;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI|Move params|Accurency")
+	float MovementAccurency = 50;
+public:
+	UFUNCTION()
+	FVector GetTurretForwardVector();
+	
+	UFUNCTION()
+	TArray<FVector> GetPatrollingPoints()
+	{
+		return PatrollingPoints;
+	};
+	UFUNCTION()
+	float GetMovementAccurency()
+	{
+		return MovementAccurency;
+	};
+	FVector GetEyesPosition();
 };

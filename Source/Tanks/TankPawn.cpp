@@ -46,7 +46,6 @@ ATankPawn::ATankPawn()
 void ATankPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	//UE_LOG(LogTemp, Warning, TEXT("_targetTurn %f"),_targetTurn );
 	
 	FVector currentLocation = Body->GetRelativeLocation();
 	FVector forwardVector = GetActorForwardVector();
@@ -78,6 +77,16 @@ void ATankPawn::MoveForward(float AxisValue)
 void ATankPawn::MoveLeft(float AxisValue)
 {
 	_targetLeftAxisValue = AxisValue;
+}
+
+FVector ATankPawn::GetTurretForwardVector()
+{
+	return  Turret->GetForwardVector();
+}
+
+FVector ATankPawn::GetEyesPosition()
+{
+	return CannonSetupPoint->GetComponentLocation();
 }
 
 void ATankPawn::RotateTurretTo(FVector TargetPosition)

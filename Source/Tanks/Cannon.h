@@ -26,6 +26,15 @@ protected:
 	UStaticMeshComponent* Mesh;
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
 	UArrowComponent * ProjectileSpawnPoint;
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
+	UParticleSystemComponent* ShootEffect;
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
+	UAudioComponent* AudioEffect;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effects")
+	UForceFeedbackEffect * ShootForceEffect;
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UMatineeCameraShake> ShootShake;
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Fire params")
 	float FireRate = 1;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Fire params")
