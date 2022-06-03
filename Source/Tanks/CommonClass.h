@@ -55,11 +55,6 @@ public:
 	virtual void ScoreUp(float Score) override;
 //AI
 protected:
-	void Targeting();
-	void RotateToPlayer();
-	bool IsPlayerInRange();
-	bool CanFire();
-	virtual void Fire();
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Targeting")
 	float TargetingRange=1000;

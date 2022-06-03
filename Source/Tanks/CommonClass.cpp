@@ -68,46 +68,4 @@ void ACommonClass::ScoreUp(float Score)
 	ScoreNumber+=Score;
 }
 
-void ACommonClass::Targeting()
-{
-	if(IsPlayerInRange())
-	{
-		RotateToPlayer();
-	}
-	if(CanFire() && Cannon && Cannon->IsReadyToFire() && IsPlayerInRange())
-	{
-		Fire();
-	}
-}
-
-void ACommonClass::RotateToPlayer()
-{
-	FRotator targetRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(),PlayerPawn->GetActorLocation());
-	FRotator currRotation = Turret->GetComponentRotation();
-	targetRotation.Pitch = currRotation.Pitch;
-	targetRotation.Roll = currRotation.Roll;
-	Turret->SetWorldRotation(FMath::Lerp(currRotation,targetRotation,TargetingSpeed));
-}
-
-bool ACommonClass::IsPlayerInRange()
-{
-	return FVector::Distance(PlayerPawn->GetActorLocation(), GetActorLocation()) <= TargetingRange;
-
-}
-
-bool ACommonClass::CanFire()
-{
-	FVector targetingDir = Turret->GetForwardVector();
-	FVector dirToPlayer = PlayerPawn->GetActorLocation() - GetActorLocation();
-	dirToPlayer.Normalize();
-	float aimAngle =  FMath::RadiansToDegrees(acosf(FVector::DotProduct(targetingDir,dirToPlayer)));
-	//UE_LOG(LogTemp, Warning, TEXT("aimAngle %f"),aimAngle );
-	return aimAngle <= Accurency;
-}
-
-void ACommonClass::Fire()
-{
-	if(Cannon)
-		Cannon->Fire();
-}
 
