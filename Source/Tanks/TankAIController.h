@@ -15,7 +15,7 @@ class TANKS_API ATankAIController : public AAIController
 {
 	GENERATED_BODY()
 	UPROPERTY()
-	ATankPawn* TankPawn;
+	ACommonClass* TankPawn;
 	UPROPERTY()
 	APawn * PlayerPawn;
 protected:
@@ -33,7 +33,7 @@ protected:
     float TargetingSpeed = 0.1f;
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Targeting")
     float Accurency = 10;
-	
+	//AI
 protected:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
@@ -45,4 +45,5 @@ protected:
     bool CanFire();
     void Fire();
 	bool IsPlayerSeen();
+	
 };

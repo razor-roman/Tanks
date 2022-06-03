@@ -19,15 +19,7 @@ UCLASS()
 class TANKS_API ATurret : public ACommonClass
 {	
 	GENERATED_BODY()
-	ATurret();
-protected:
-	UPROPERTY(EditAnywhere)
-	UArrowComponent* CannonSetupPoint;
-	
-	
-public:	
-	UPROPERTY(EditAnywhere)
-	TSubclassOf<ACannon> CannonClass;	
+	ATurret();			
 	
 protected:
 	void BeginPlay() override;

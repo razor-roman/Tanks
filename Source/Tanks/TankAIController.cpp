@@ -8,8 +8,7 @@
 void ATankAIController::BeginPlay()
 {
 	Super::BeginPlay();
-	TankPawn=Cast<ATankPawn>(GetPawn());
-	
+	TankPawn=Cast<ACommonClass>(GetPawn());
 	PlayerPawn = GetWorld()->GetFirstPlayerController()->GetPawn();
 	FVector pawnLocation = TankPawn->GetActorLocation();
 	MovementAccurency = TankPawn->GetMovementAccurency();

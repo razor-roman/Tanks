@@ -25,8 +25,6 @@ ATankPawn::ATankPawn()
 	Turret->SetRelativeLocation(FVector(-80,0,100));
 	Camera->SetRelativeRotation(FRotator(0,0,0));
 
-	CannonSetupPoint = CreateDefaultSubobject<UArrowComponent>(TEXT("Cannon setup point"));
-	CannonSetupPoint->AttachToComponent(Turret,FAttachmentTransformRules::KeepRelativeTransform);
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> BodyVisualAsset(TEXT("StaticMesh'/Game/CSC/Meshes/SM_TANK_Base1.SM_TANK_Base1'"));
 	if(BodyVisualAsset.Succeeded())
 	{ 
@@ -69,44 +67,8 @@ void ATankPawn::Tick(float DeltaTime)
 	
 }
 
-void ATankPawn::MoveForward(float AxisValue)
-{
-	_targetForwardAxisValue = AxisValue;
-}
-
-void ATankPawn::MoveLeft(float AxisValue)
-{
-	_targetLeftAxisValue = AxisValue;
-}
-
-FVector ATankPawn::GetTurretForwardVector()
-{
-	return  Turret->GetForwardVector();
-}
-
-FVector ATankPawn::GetEyesPosition()
-{
-	return CannonSetupPoint->GetComponentLocation();
-}
-
-void ATankPawn::RotateTurretTo(FVector TargetPosition)
-{
-	FRotator targetRotation = UKismetMathLibrary::FindLookAtRotation(Turret->GetComponentLocation(), TargetPosition);
-	FRotator currRotation = Turret->GetComponentRotation();
-	targetRotation.Pitch = currRotation.Pitch;
-	targetRotation.Roll = currRotation.Roll;
-	Turret->SetWorldRotation(FMath::Lerp(currRotation, targetRotation, TurretRotationInterpolationKey));
-
-}
-
-void ATankPawn::Fire()
-{
-	Cannon->Fire();
-}
-
 void ATankPawn::FireSpecial()
-{
-	
+{	
 	Cannon->FireSpecial();
 }
 

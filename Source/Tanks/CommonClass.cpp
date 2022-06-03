@@ -3,6 +3,7 @@
 
 #include "CommonClass.h"
 
+#include "Components/ArrowComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 
 // Sets default values
@@ -14,11 +15,13 @@ ACommonClass::ACommonClass()
 	Turret=CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Turret"));
 	HitCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("COLLIDER"));
 	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("HEALTH"));
+	CannonSetupPoint = CreateDefaultSubobject<UArrowComponent>(TEXT("Cannon setup point"));
 	
 	RootComponent=Body;
 	Body->SetupAttachment(RootComponent);
 	Turret->SetupAttachment(Body);
 	HitCollider->SetupAttachment(RootComponent);
+	CannonSetupPoint->AttachToComponent(Turret,FAttachmentTransformRules::KeepRelativeTransform);
 	
 	HealthComponent->OnDie.AddUObject(this,&ACommonClass::Die);
 	HealthComponent->OnDamaged.AddUObject(this,&ACommonClass::DamageTaked);
@@ -66,6 +69,41 @@ void ACommonClass::TakeDamage(FDamageData DamageData)
 void ACommonClass::ScoreUp(float Score)
 {
 	ScoreNumber+=Score;
+}
+
+void ACommonClass::MoveForward(float AxisValue)
+{
+	_targetForwardAxisValue = AxisValue;
+}
+
+void ACommonClass::MoveLeft(float AxisValue)
+{
+	_targetLeftAxisValue = AxisValue;
+}
+
+void ACommonClass::Fire()
+{
+	Cannon->Fire();
+}
+
+void ACommonClass::RotateTurretTo(FVector TargetPosition)
+{
+	FRotator targetRotation = UKismetMathLibrary::FindLookAtRotation(Turret->GetComponentLocation(), TargetPosition);
+	FRotator currRotation = Turret->GetComponentRotation();
+	targetRotation.Pitch = currRotation.Pitch;
+	targetRotation.Roll = currRotation.Roll;
+	Turret->SetWorldRotation(FMath::Lerp(currRotation, targetRotation, TurretRotationInterpolationKey));
+
+}
+
+FVector ACommonClass::GetTurretForwardVector()
+{
+	return  Turret->GetForwardVector();
+}
+
+FVector ACommonClass::GetEyesPosition()
+{
+	return CannonSetupPoint->GetComponentLocation();
 }
 
 
