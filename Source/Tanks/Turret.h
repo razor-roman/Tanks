@@ -22,12 +22,7 @@ class TANKS_API ATurret : public ACommonClass
 	ATurret();			
 	
 protected:
-	void BeginPlay() override;
-	void Destroyed() override;
-	void Targeting();
-	void RotateToPlayer();
-	bool IsPlayerInRange();
-	bool CanFire();
-
+	virtual void BeginPlay() override;
+	virtual void Destroyed() override;
 	
 };

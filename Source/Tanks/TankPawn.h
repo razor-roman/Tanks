@@ -34,12 +34,5 @@ public:
 	void ChangeWeapon();
 protected:
 	virtual void BeginPlay() override;
-	virtual void Tick(float DeltaTime) override;
-	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Turret|Cannon")
-	TSubclassOf<ACannon> FirstCannon;
-	UPROPERTY()
-	TSubclassOf<ACannon> SecondCannon;
-	bool first=true;
-	
+	virtual void Tick(float DeltaTime) override;	
 };

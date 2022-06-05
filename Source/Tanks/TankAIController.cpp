@@ -8,22 +8,35 @@
 void ATankAIController::BeginPlay()
 {
 	Super::BeginPlay();
-	TankPawn=Cast<ATankPawn>(GetPawn());
+	TankPawn=Cast<ACommonClass>(GetPawn());
 	PlayerPawn = GetWorld()->GetFirstPlayerController()->GetPawn();
 	FVector pawnLocation = TankPawn->GetActorLocation();
 	MovementAccurency = TankPawn->GetMovementAccurency();
 	TArray<FVector> points = TankPawn->GetPatrollingPoints();
-	for(FVector point : points)
+	if(points.Num()!=0)
 	{
-		PatrollingPoints.Add(point+pawnLocation);
-	}
-	CurrentPatrolPointIndex=0;
+		for(FVector point : points)
+		{
+			PatrollingPoints.Add(point+pawnLocation);
+		}
+		CurrentPatrolPointIndex=0;
+	}	
 }
 
 void ATankAIController::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
-	if(MovablePawn)
+	if(!PlayerPawn)
+	{
+		UE_LOG(LogTemp,Verbose,TEXT("NO PlayerPawn"));		
+		return;
+	}
+	if(!TankPawn)
+	{
+		UE_LOG(LogTemp,Verbose,TEXT("NO TankPawn"));		
+		return;
+	}
+	if(PatrollingPoints.Num()!=0)
 	{
 		float rotationValue=GetRotationgValue();	
 		TankPawn->MoveForward(1);

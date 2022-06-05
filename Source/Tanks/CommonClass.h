@@ -29,13 +29,17 @@ protected:
 	UHealthComponent* HealthComponent;
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
 	UArrowComponent * CannonSetupPoint;
+	/*UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
+	UAudioComponent* OnDestroyAudioEffect;
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
+	UParticleSystemComponent* OnDestroyParticleEffect;*/
 	float Health=1;
 	UPROPERTY()
 	float ScoreNumber=0;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	
+	virtual void Destroyed() override;
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<ACannon> CannonClass;
 	

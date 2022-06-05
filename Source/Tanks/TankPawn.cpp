@@ -58,25 +58,11 @@ void ATankPawn::BeginPlay()
 {
 	Super::BeginPlay();
 	TankController=Cast<AMyPlayerController>(GetController());
-	SetupCannon(FirstCannon);
 }
 
 void ATankPawn::ChangeWeapon()
 {
-	if(first==true)
-	{
-		first=false;
-		UE_LOG(LogTemp, Warning, TEXT("ChangeWeapon SecondCannon %f"));
-		SetupCannon(SecondCannon);
-		return;
-	}
-	if(first==false)
-	{
-		first=true;
-		UE_LOG(LogTemp, Warning, TEXT(" ChangeWeapon FirstCannon %f"));
-		SetupCannon(FirstCannon);
-		return;
-	}	
+	
 }
 
 

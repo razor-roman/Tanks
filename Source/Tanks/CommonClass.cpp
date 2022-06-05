@@ -4,7 +4,10 @@
 #include "CommonClass.h"
 
 #include "Components/ArrowComponent.h"
+#include "Components/AudioComponent.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Kismet/KismetSystemLibrary.h"
+#include "Particles/ParticleSystemComponent.h"
 
 // Sets default values
 ACommonClass::ACommonClass()
@@ -16,12 +19,16 @@ ACommonClass::ACommonClass()
 	HitCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("COLLIDER"));
 	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("HEALTH"));
 	CannonSetupPoint = CreateDefaultSubobject<UArrowComponent>(TEXT("Cannon setup point"));
+	//OnDestroyAudioEffect = CreateDefaultSubobject<UAudioComponent>(TEXT("OnDestroyAudioEffect"));
+	//OnDestroyParticleEffect = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("OnDestroyParticleEffect"));
 	
 	RootComponent=Body;
 	Body->SetupAttachment(RootComponent);
 	Turret->SetupAttachment(Body);
 	HitCollider->SetupAttachment(RootComponent);
 	CannonSetupPoint->AttachToComponent(Turret,FAttachmentTransformRules::KeepRelativeTransform);
+	//OnDestroyAudioEffect->SetupAttachment(Body);
+	//OnDestroyParticleEffect->SetupAttachment(Body);
 	
 	HealthComponent->OnDie.AddUObject(this,&ACommonClass::Die);
 	HealthComponent->OnDamaged.AddUObject(this,&ACommonClass::DamageTaked);
@@ -32,6 +39,12 @@ ACommonClass::ACommonClass()
 void ACommonClass::BeginPlay()
 {
 	Super::BeginPlay();
+	SetupCannon(CannonClass);
+}
+
+void ACommonClass::Destroyed()
+{
+	Super::Destroyed();
 }
 
 // Called every frame
@@ -49,7 +62,11 @@ void ACommonClass::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 void ACommonClass::Die()
 {
-	
+	if(Cannon)
+		Cannon->Destroy();
+	//OnDestroyParticleEffect->ActivateSystem();
+	//OnDestroyAudioEffect->Play();
+	//SetLifeSpan(5);
 	Destroy();
 }
 

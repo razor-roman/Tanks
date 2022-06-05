@@ -15,7 +15,7 @@ class TANKS_API ATankAIController : public AAIController
 {
 	GENERATED_BODY()
 	UPROPERTY()
-	ATankPawn* TankPawn;
+	ACommonClass* TankPawn;
 	UPROPERTY()
 	APawn * PlayerPawn;
 protected:
@@ -24,8 +24,6 @@ protected:
 	int32 CurrentPatrolPointIndex = 0;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI|Move params|Accurency")
 	float MovementAccurency;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI|Options")
-	bool MovablePawn=true;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Targeting")
     float TargetingRange = 1000;
