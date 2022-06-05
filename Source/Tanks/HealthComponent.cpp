@@ -36,10 +36,11 @@ void UHealthComponent::TakeDamage(FDamageData DamageData)
 {
 	float takedDamageValue = DamageData.DamageValue;
 	CurrentHealth -= takedDamageValue;
-	if(CurrentHealth<=0)
+	if(CurrentHealth<=0 && Died==false)
 	{
 		if(OnDie.IsBound())
 			OnDie.Broadcast();
+		Died=true;
 	}
 	else
 	{
@@ -63,4 +64,9 @@ void UHealthComponent::AddHealth(float AdditionalHealthValue)
 	CurrentHealth+=AdditionalHealthValue;
 	if(CurrentHealth>MaxHealth)
 		CurrentHealth=MaxHealth;
+}
+
+void UHealthComponent::SetHealth(float Health)
+{
+	CurrentHealth=Health;
 }

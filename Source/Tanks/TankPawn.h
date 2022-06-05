@@ -29,7 +29,7 @@ public:
 	UPROPERTY(EditAnywhere)
 	UCameraComponent* Camera;	
 	ATankPawn();
-	float interpolatedYaw;
+	
 	void FireSpecial();
 	void ChangeWeapon();
 protected:

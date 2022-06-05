@@ -6,6 +6,8 @@
 #include "ComponentUtils.h"
 #include "DamageTaker.h"
 #include "IScorable.h"
+#include "Components/AudioComponent.h"
+#include "Particles/ParticleSystemComponent.h"
 
 // Sets default values
 AProjectile::AProjectile()
@@ -14,10 +16,18 @@ AProjectile::AProjectile()
 	PrimaryActorTick.bCanEverTick = false;
 	SceeneCpm = CreateDefaultSubobject<USceneComponent>(TEXT("ROOT"));
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MESH"));
+	OnDestroyAudioEffect = CreateDefaultSubobject<UAudioComponent>(TEXT("OnDestroyAudioEffect"));
+	OnDestroyParticleEffect = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("OnDestroyParticleEffect"));
+	
 	RootComponent=SceeneCpm;
 	Mesh->SetupAttachment(RootComponent);
+	OnDestroyAudioEffect->SetupAttachment(RootComponent);
+	OnDestroyParticleEffect->SetupAttachment(RootComponent);
 	Mesh->OnComponentBeginOverlap.AddDynamic(this,&AProjectile::OnMeshOverlapBegin);
 	Mesh->SetCollisionObjectType(ECollisionChannel::ECC_GameTraceChannel1);
+	
+	OnDestroyAudioEffect->SetAutoActivate(false);
+	OnDestroyParticleEffect->SetAutoActivate(false);
 }
 
 // Called when the game starts or when spawned
@@ -33,6 +43,16 @@ void AProjectile::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 }
+
+void AProjectile::Destroy()
+{
+	OnDestroyParticleEffect->ActivateSystem();
+	OnDestroyAudioEffect->Play();
+	MoveSpeed=0;
+	Mesh->SetHiddenInGame(true);
+	SetLifeSpan(5);
+}
+
 
 void AProjectile::Move()
 {
@@ -68,11 +88,7 @@ void AProjectile::OnMeshOverlapBegin(class UPrimitiveComponent* OverlappedComp, 
 			damageData.DamageMaker = this;
 			damageTakerActor->TakeDamage(damageData);
 		}
-		else
-		{
-			OtherActor->Destroy();
-		}
-		Destroy();
+		AProjectile::Destroy();
 	}
 }
 

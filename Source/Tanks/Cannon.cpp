@@ -25,6 +25,9 @@ ACannon::ACannon()
 	Mesh->SetupAttachment(RootComponent);
 	ShootEffect->SetupAttachment(ProjectileSpawnPoint);
 	AudioEffect->SetupAttachment(Mesh);
+
+	ShootEffect->SetAutoActivate(false);
+	AudioEffect->SetAutoActivate(false);
 }
 
 // Called when the game starts or when spawned

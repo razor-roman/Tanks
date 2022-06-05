@@ -3,6 +3,7 @@
 
 #include "CommonClass.h"
 
+#include "TankPawn.h"
 #include "Components/ArrowComponent.h"
 #include "Components/AudioComponent.h"
 #include "Kismet/KismetMathLibrary.h"
@@ -19,20 +20,22 @@ ACommonClass::ACommonClass()
 	HitCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("COLLIDER"));
 	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("HEALTH"));
 	CannonSetupPoint = CreateDefaultSubobject<UArrowComponent>(TEXT("Cannon setup point"));
-	//OnDestroyAudioEffect = CreateDefaultSubobject<UAudioComponent>(TEXT("OnDestroyAudioEffect"));
-	//OnDestroyParticleEffect = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("OnDestroyParticleEffect"));
+	OnDestroyAudioEffect = CreateDefaultSubobject<UAudioComponent>(TEXT("OnDestroyAudioEffect"));
+	OnDestroyParticleEffect = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("OnDestroyParticleEffect"));
 	
 	RootComponent=Body;
 	Body->SetupAttachment(RootComponent);
-	Turret->SetupAttachment(Body);
+	Turret->AttachToComponent(Body,FAttachmentTransformRules::KeepWorldTransform);
 	HitCollider->SetupAttachment(RootComponent);
 	CannonSetupPoint->AttachToComponent(Turret,FAttachmentTransformRules::KeepRelativeTransform);
-	//OnDestroyAudioEffect->SetupAttachment(Body);
-	//OnDestroyParticleEffect->SetupAttachment(Body);
+	OnDestroyAudioEffect->SetupAttachment(Body);
+	OnDestroyParticleEffect->SetupAttachment(Body);
 	
 	HealthComponent->OnDie.AddUObject(this,&ACommonClass::Die);
 	HealthComponent->OnDamaged.AddUObject(this,&ACommonClass::DamageTaked);
-	
+
+	OnDestroyAudioEffect->SetAutoActivate(false);
+	OnDestroyParticleEffect->SetAutoActivate(false);
 }
 
 // Called when the game starts or when spawned
@@ -40,6 +43,8 @@ void ACommonClass::BeginPlay()
 {
 	Super::BeginPlay();
 	SetupCannon(CannonClass);
+	HealthComponent->SetHealth(Health);
+	
 }
 
 void ACommonClass::Destroyed()
@@ -61,13 +66,23 @@ void ACommonClass::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 }
 
 void ACommonClass::Die()
-{
-	if(Cannon)
-		Cannon->Destroy();
-	//OnDestroyParticleEffect->ActivateSystem();
-	//OnDestroyAudioEffect->Play();
+{	
+	UE_LOG(LogTemp, Warning, TEXT("ACommonClass::Die"));
+	OnDestroyParticleEffect->ActivateSystem();
+	OnDestroyAudioEffect->Play();
+	if(!Controller->IsPlayerController())
+	{
+		Controller->Destroy();
+	}
+	else
+	{
+		
+	}
+	//Turret->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
+	//Turret->SetSimulatePhysics(true);
+	//Turret->AddImpulse(FVector(0,0,500));
 	//SetLifeSpan(5);
-	Destroy();
+	//Destroy();
 }
 
 void ACommonClass::DamageTaked(float DamageValue)

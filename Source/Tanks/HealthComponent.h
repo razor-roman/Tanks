@@ -38,5 +38,7 @@ public:
 	float GetHealth() const;
 	float GetHealthState() const;
 	void AddHealth(float AdditionalHealthValue);
+	void SetHealth(float Health);
+	bool Died=false;
 };
 	

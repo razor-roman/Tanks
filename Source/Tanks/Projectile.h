@@ -22,6 +22,10 @@ protected:
 	UStaticMeshComponent* Mesh;
 	UPROPERTY(VisibleDefaultsOnly,BlueprintReadWrite,Category="Components")
 	USceneComponent * SceeneCpm;
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
+	UAudioComponent* OnDestroyAudioEffect;
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
+	UParticleSystemComponent* OnDestroyParticleEffect;
 	UPROPERTY(VisibleDefaultsOnly,BlueprintReadWrite,Category="Movement|Speed")
 	float MoveSpeed = 2000;
 	UPROPERTY(VisibleDefaultsOnly,BlueprintReadWrite,Category="Movement|Speed")
@@ -32,6 +36,7 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	void Destroy();
 	void Start();
 protected:
 	UFUNCTION()

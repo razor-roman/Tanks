@@ -29,10 +29,11 @@ protected:
 	UHealthComponent* HealthComponent;
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
 	UArrowComponent * CannonSetupPoint;
-	/*UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
 	UAudioComponent* OnDestroyAudioEffect;
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
-	UParticleSystemComponent* OnDestroyParticleEffect;*/
+	UParticleSystemComponent* OnDestroyParticleEffect;
+	UPROPERTY(EditAnywhere,Category="Health");
 	float Health=1;
 	UPROPERTY()
 	float ScoreNumber=0;
@@ -50,6 +51,7 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 public:
+	
 	UPROPERTY()
 	ACannon* Cannon;
 	UPROPERTY()
@@ -76,6 +78,7 @@ protected:
 	float _targetLeftAxisValue;
 	UPROPERTY(EditAnywhere,Category="Movement|Speed")
 	float InterpolationKey = 0.03f;
+	float interpolatedYaw;
 	float TurretRotationInterpolationKey=0.1f;
 	UPROPERTY(EditAnywhere,Category="Movement|Speed")
 	float MoveSpeed = 1000.0f;

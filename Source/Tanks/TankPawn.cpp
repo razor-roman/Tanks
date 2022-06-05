@@ -62,7 +62,20 @@ void ATankPawn::BeginPlay()
 
 void ATankPawn::ChangeWeapon()
 {
-	
+	/*if(first==true)
+	{
+		first=false;
+		UE_LOG(LogTemp, Warning, TEXT("ChangeWeapon SecondCannon %f"));
+		SetupCannon(SecondCannon);
+		return;
+	}
+	if(first==false)
+	{
+		first=true;
+		UE_LOG(LogTemp, Warning, TEXT(" ChangeWeapon FirstCannon %f"));
+		SetupCannon(FirstCannon);
+		return;
+	}	*/
 }
 
 
