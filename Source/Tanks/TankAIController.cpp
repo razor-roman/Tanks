@@ -12,15 +12,16 @@ void ATankAIController::BeginPlay()
 	PlayerPawn = GetWorld()->GetFirstPlayerController()->GetPawn();
 	FVector pawnLocation = TankPawn->GetActorLocation();
 	MovementAccurency = TankPawn->GetMovementAccurency();
-	TArray<FVector> points = TankPawn->GetPatrollingPoints();
+	/*TArray<FVector> points = TankPawn->GetPatrollingPoints();	
 	if(points.Num()!=0)
 	{
 		for(FVector point : points)
 		{
 			PatrollingPoints.Add(point+pawnLocation);
+			
 		}
 		CurrentPatrolPointIndex=0;
-	}	
+	}	*/
 }
 
 void ATankAIController::Tick(float DeltaSeconds)
@@ -38,9 +39,14 @@ void ATankAIController::Tick(float DeltaSeconds)
 	}
 	if(PatrollingPoints.Num()!=0)
 	{
-		float rotationValue=GetRotationgValue();	
-		TankPawn->MoveForward(1);
+		float rotationValue=GetRotationgValue();
 		TankPawn->MoveLeft(rotationValue);
+		if(rotationValue==1)
+		{
+			TankPawn->MoveForward(0);
+		}
+		else
+		TankPawn->MoveForward(1);
 	}	
 	Targeting();
 }
@@ -62,11 +68,13 @@ float ATankAIController::GetRotationgValue()
 	//DrawDebugLine(GetWorld(), pawnLocation, currentPoint, FColor::Green, false,0.1f, 0, 5);
 	float forwardAngle = FMath::RadiansToDegrees(acosf(FVector::DotProduct(forwardDirection,moveDirection)));
 	float rightAngle = FMath::RadiansToDegrees(acosf(FVector::DotProduct(rightDirection,moveDirection)));
-	float rotationValue=0;
-	if(forwardAngle>5)
+	float rotationValue=1;
+	if(forwardAngle>1)
 		rotationValue=1;
-	if(rightAngle>90)
-		rotationValue=-rotationValue;
+	if(forwardAngle<=1)
+		rotationValue=0;
+	/*if(rightAngle>90)
+		rotationValue=-rotationValue;*/
 	return rotationValue;
 }
 
@@ -75,6 +83,7 @@ void ATankAIController::Targeting()
 	if(CanFire())
 		Fire();
 	else
+		if(IsPlayerSeen())
 		RotateToPlayer();
 }
 

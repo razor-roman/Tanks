@@ -6,6 +6,7 @@
 #include "ComponentUtils.h"
 #include "DamageTaker.h"
 #include "IScorable.h"
+#include "TankPawn.h"
 #include "Components/AudioComponent.h"
 #include "Particles/ParticleSystemComponent.h"
 
@@ -80,6 +81,7 @@ void AProjectile::OnMeshOverlapBegin(class UPrimitiveComponent* OverlappedComp, 
 	if(OtherActor!= owner && OtherActor!=ownerByOwner)
 	{
 		IDamageTaker * damageTakerActor = Cast<IDamageTaker>(OtherActor);
+		ATankPawn * playerPawn = Cast<ATankPawn>(OtherActor);
 		if(damageTakerActor)
 		{
 			FDamageData damageData;

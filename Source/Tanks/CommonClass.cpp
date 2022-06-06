@@ -25,7 +25,7 @@ ACommonClass::ACommonClass()
 	
 	RootComponent=Body;
 	Body->SetupAttachment(RootComponent);
-	Turret->AttachToComponent(Body,FAttachmentTransformRules::KeepWorldTransform);
+	Turret->SetupAttachment(Body);
 	HitCollider->SetupAttachment(RootComponent);
 	CannonSetupPoint->AttachToComponent(Turret,FAttachmentTransformRules::KeepRelativeTransform);
 	OnDestroyAudioEffect->SetupAttachment(Body);
@@ -36,6 +36,8 @@ ACommonClass::ACommonClass()
 
 	OnDestroyAudioEffect->SetAutoActivate(false);
 	OnDestroyParticleEffect->SetAutoActivate(false);
+	HitCollider->SetBoxExtent(FVector(150,150,50));
+	//if(!CannonClass) Destroy();
 }
 
 // Called when the game starts or when spawned
@@ -70,6 +72,7 @@ void ACommonClass::Die()
 	UE_LOG(LogTemp, Warning, TEXT("ACommonClass::Die"));
 	OnDestroyParticleEffect->ActivateSystem();
 	OnDestroyAudioEffect->Play();
+	
 	if(!Controller->IsPlayerController())
 	{
 		Controller->Destroy();
@@ -109,6 +112,7 @@ void ACommonClass::MoveForward(float AxisValue)
 
 void ACommonClass::MoveLeft(float AxisValue)
 {
+				
 	_targetLeftAxisValue = AxisValue;
 }
 
@@ -149,7 +153,12 @@ void ACommonClass::SetupCannon(TSubclassOf<ACannon> cannon)
 	if(Cannon)
 	{
 		Cannon->Destroy();		
-	}	
+	}
+	else
+		if(!cannon)
+	{
+		Destroy();
+	}
 	FActorSpawnParameters params;
 	params.Instigator = this;
 	params.Owner = this;

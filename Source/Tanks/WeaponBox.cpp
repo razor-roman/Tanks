@@ -14,9 +14,10 @@ void AWeaponBox::OnMeshOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor*
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	Super::OnMeshOverlapBegin(OverlappedComp, OtherActor, OtherComp, OtherBodyIndex, bFromSweep, SweepResult);
-	ATankPawn * playerPawn = Cast<ATankPawn>(GetWorld()->GetFirstPlayerController()->GetPawn());
-	if(OtherActor == playerPawn)
-	{
+	ATankPawn * playerPawn = Cast<ATankPawn>(OtherActor);
+	if(playerPawn->GetPatrollingPoints().Num()==0)
+	{		
 		playerPawn->SetupCannon(CannonClass);
+		Destroy();
 	}
 }

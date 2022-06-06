@@ -24,7 +24,11 @@ ATankPawn::ATankPawn()
 	
 	Turret->SetRelativeLocation(FVector(-80,0,100));
 	Camera->SetRelativeRotation(FRotator(0,0,0));
+	
+	HitCollider->SetBoxExtent(FVector(150,150,50));
+	HitCollider->SetRelativeLocation(FVector(0,0,110));
 
+	CannonSetupPoint->SetRelativeLocation(FVector(290,0,60));
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> BodyVisualAsset(TEXT("StaticMesh'/Game/CSC/Meshes/SM_TANK_Base1.SM_TANK_Base1'"));
 	if(BodyVisualAsset.Succeeded())
 	{ 
