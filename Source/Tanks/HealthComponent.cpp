@@ -41,6 +41,7 @@ void UHealthComponent::TakeDamage(FDamageData DamageData)
 		if(OnDie.IsBound())
 			OnDie.Broadcast();
 		Died=true;
+		UE_LOG(LogTemp, Warning, TEXT("Died:%f"), Died);
 	}
 	else
 	{

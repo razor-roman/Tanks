@@ -51,7 +51,7 @@ void AProjectile::Destroy()
 	OnDestroyAudioEffect->Play();
 	MoveSpeed=0;
 	Mesh->SetHiddenInGame(true);
-	SetLifeSpan(5);
+	SetLifeSpan(0.5);
 }
 
 
@@ -74,7 +74,7 @@ void AProjectile::OnMeshOverlapBegin(class UPrimitiveComponent* OverlappedComp, 
                                      OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool
                                      bFromSweep, const FHitResult& SweepResult)
 {	
-	UE_LOG(LogTemp,Warning,TEXT("Projectile %s collide with %s."),*GetName(),*OtherActor->GetName());
+	//UE_LOG(LogTemp,Warning,TEXT("Projectile %s collide with %s."),*GetName(),*OtherActor->GetName());
 	AActor* owner = GetOwner();
 	AActor* ownerByOwner = owner != nullptr? owner->GetOwner() : nullptr;
 	
@@ -92,5 +92,6 @@ void AProjectile::OnMeshOverlapBegin(class UPrimitiveComponent* OverlappedComp, 
 		}
 		AProjectile::Destroy();
 	}
+	AProjectile::Destroy();
 }
 

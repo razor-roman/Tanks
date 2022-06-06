@@ -46,7 +46,7 @@ void ACommonClass::BeginPlay()
 	Super::BeginPlay();
 	SetupCannon(CannonClass);
 	HealthComponent->SetHealth(Health);
-	
+	PlayerStart=GetActorLocation();
 }
 
 void ACommonClass::Destroyed()
@@ -71,21 +71,21 @@ void ACommonClass::Die()
 {	
 	UE_LOG(LogTemp, Warning, TEXT("ACommonClass::Die"));
 	OnDestroyParticleEffect->ActivateSystem();
-	OnDestroyAudioEffect->Play();
-	
+	OnDestroyAudioEffect->Play();	
 	if(!Controller->IsPlayerController())
 	{
 		Controller->Destroy();
+		MoveLeft(0);
+		Body->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldDynamic,ECollisionResponse::ECR_Ignore);
+		HitCollider->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldDynamic,ECollisionResponse::ECR_Ignore);
 	}
 	else
 	{
-		
+		SetActorLocation(PlayerStart);
+		HealthComponent->SetHealth(1);
+		OnDestroyParticleEffect->Deactivate();
+		OnDestroyAudioEffect->Stop();
 	}
-	//Turret->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
-	//Turret->SetSimulatePhysics(true);
-	//Turret->AddImpulse(FVector(0,0,500));
-	//SetLifeSpan(5);
-	//Destroy();
 }
 
 void ACommonClass::DamageTaked(float DamageValue)
@@ -153,12 +153,7 @@ void ACommonClass::SetupCannon(TSubclassOf<ACannon> cannon)
 	if(Cannon)
 	{
 		Cannon->Destroy();		
-	}
-	else
-		if(!cannon)
-	{
-		Destroy();
-	}
+	}	
 	FActorSpawnParameters params;
 	params.Instigator = this;
 	params.Owner = this;

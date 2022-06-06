@@ -37,6 +37,7 @@ protected:
 	float Health=1;
 	UPROPERTY()
 	float ScoreNumber=0;
+	FVector PlayerStart;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
