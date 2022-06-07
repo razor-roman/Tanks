@@ -26,12 +26,17 @@ protected:
 	UAudioComponent* OnDestroyAudioEffect;
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
 	UParticleSystemComponent* OnDestroyParticleEffect;
+	
 	UPROPERTY(VisibleDefaultsOnly,BlueprintReadWrite,Category="Movement|Speed")
 	float MoveSpeed = 2000;
 	UPROPERTY(VisibleDefaultsOnly,BlueprintReadWrite,Category="Movement|Speed")
 	float MoveRate = 0.005f;
 	UPROPERTY(VisibleDefaultsOnly,BlueprintReadWrite,Category="Movement|Speed")
 	float Damage = 1;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Damage")
+    float PushForce = 1000;
+	
 	FTimerHandle MovementTimerHandle;
 public:	
 	// Called every frame

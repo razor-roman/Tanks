@@ -90,6 +90,19 @@ void AProjectile::OnMeshOverlapBegin(class UPrimitiveComponent* OverlappedComp, 
 			damageData.DamageMaker = this;
 			damageTakerActor->TakeDamage(damageData);
 		}
+		else
+		{
+			UPrimitiveComponent* mesh = Cast<UPrimitiveComponent>(OtherActor->GetRootComponent());
+			if(mesh)
+			{
+				if(mesh->IsSimulatingPhysics())
+				{
+					FVector forceVector=OtherActor->GetActorLocation() - GetActorLocation();
+					forceVector.Normalize();
+					mesh->AddImpulse(forceVector*PushForce,NAME_None,true);
+				}
+			}
+		}
 		AProjectile::Destroy();
 	}
 	AProjectile::Destroy();
