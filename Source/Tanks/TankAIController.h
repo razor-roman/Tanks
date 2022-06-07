@@ -13,12 +13,12 @@
 UCLASS()
 class TANKS_API ATankAIController : public AAIController
 {
+protected:
 	GENERATED_BODY()
 	UPROPERTY()
 	ACommonClass* TankPawn;
 	UPROPERTY()
 	APawn * PlayerPawn;
-protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI|Move params|Patrol points" , Meta = (MakeEditWidget = true))
 	TArray<FVector> PatrollingPoints;
 	int32 CurrentPatrolPointIndex = 0;
@@ -41,7 +41,8 @@ protected:
     void RotateToPlayer();
     bool IsPlayerInRange();
     bool CanFire();
-    void Fire();
 	bool IsPlayerSeen();
-	
+    void Fire();
+
+	void Initialize();	
 };

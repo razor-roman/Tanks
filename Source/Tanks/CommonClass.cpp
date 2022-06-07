@@ -37,7 +37,7 @@ ACommonClass::ACommonClass()
 	OnDestroyAudioEffect->SetAutoActivate(false);
 	OnDestroyParticleEffect->SetAutoActivate(false);
 	HitCollider->SetBoxExtent(FVector(150,150,50));
-	//if(!CannonClass) Destroy();
+	
 }
 
 // Called when the game starts or when spawned
@@ -47,6 +47,7 @@ void ACommonClass::BeginPlay()
 	SetupCannon(CannonClass);
 	HealthComponent->SetHealth(Health);
 	PlayerStart=GetActorLocation();
+	
 }
 
 void ACommonClass::Destroyed()
@@ -58,7 +59,7 @@ void ACommonClass::Destroyed()
 void ACommonClass::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-		
+	
 }
 
 // Called to bind functionality to input
@@ -170,6 +171,21 @@ void ACommonClass::RotateTurretTo(FVector TargetPosition)
 	targetRotation.Roll = currRotation.Roll;
 	Turret->SetWorldRotation(FMath::Lerp(currRotation, targetRotation, TurretRotationInterpolationKey));
 
+}
+
+TArray<FVector> ACommonClass::GetTargetingPoints()
+{
+	TArray<FVector> points;
+	for (ATargetPoint* point: TargetPoints)
+	{
+		points.Add(point->GetActorLocation());
+	}
+	return points;
+}
+
+void ACommonClass::SetTargetPoints(TArray<ATargetPoint*> NewTargetPoints)
+{
+	TargetPoints = NewTargetPoints;
 }
 
 FVector ACommonClass::GetTurretForwardVector()

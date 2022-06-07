@@ -8,6 +8,7 @@
 #include "HealthComponent.h"
 #include "IScorable.h"
 #include "Components/BoxComponent.h"
+#include "Engine/TargetPoint.h"
 #include "GameFramework/Pawn.h"
 #include "CommonClass.generated.h"
 
@@ -89,8 +90,11 @@ protected:
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI|Move params|Patrol points" , Meta = (MakeEditWidget = true))
 	TArray<FVector> PatrollingPoints;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI|Move params|Target Points" , Meta = (MakeEditWidget = true))
+	TArray<ATargetPoint*> TargetPoints;	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI|Move params|Accurency")
 	float MovementAccurency = 50;
+	
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Targeting")
 	float TargetingRange=1000;
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Targeting")
@@ -110,6 +114,8 @@ public:
 	{
 		return PatrollingPoints;
 	};
+	TArray<FVector> GetTargetingPoints();
+	void SetTargetPoints(TArray<ATargetPoint*> NewPatrollingPoints);
 	UFUNCTION()
 	FVector GetTurretForwardVector();
 	FVector GetEyesPosition();
