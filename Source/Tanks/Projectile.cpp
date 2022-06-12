@@ -63,6 +63,37 @@ void AProjectile::Move()
 	
 }
 
+void AProjectile::CheckDamageOrPush(FHitResult hitResult)
+{
+	AActor* otherActor = hitResult.GetActor();
+	if(!otherActor)
+		return;
+	IDamageTaker * damageTakerActor = Cast<IDamageTaker>(otherActor);
+	if(damageTakerActor)
+	{
+		FDamageData damageData;
+		damageData.DamageValue = Damage;
+		damageData.Instigator = GetOwner();
+		damageData.DamageMaker = this;
+		damageTakerActor->TakeDamage(damageData);
+	}
+	else
+	{
+		UPrimitiveComponent* mesh =
+		Cast<UPrimitiveComponent>(otherActor->GetRootComponent());
+		if(mesh )
+		{
+			if(mesh->IsSimulatingPhysics())
+			{
+				FVector forceVector = otherActor->GetActorLocation() -
+				GetActorLocation();
+				forceVector.Normalize();
+				mesh->AddImpulse(forceVector * PushForce, NAME_None, true);
+			}
+		}
+	}
+}
+
 void AProjectile::Start()
 {
 	GetWorld()->GetTimerManager().SetTimer(MovementTimerHandle,this,

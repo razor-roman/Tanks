@@ -24,7 +24,7 @@ ACommonClass::ACommonClass()
 	OnDestroyParticleEffect = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("OnDestroyParticleEffect"));
 	
 	RootComponent=Body;
-	Body->SetupAttachment(RootComponent);
+	//Body->SetupAttachment(RootComponent);
 	Turret->SetupAttachment(Body);
 	HitCollider->SetupAttachment(RootComponent);
 	CannonSetupPoint->AttachToComponent(Turret,FAttachmentTransformRules::KeepRelativeTransform);

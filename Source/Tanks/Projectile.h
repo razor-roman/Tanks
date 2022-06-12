@@ -42,7 +42,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	void Destroy();
-	void Start();
+	virtual void Start();
 protected:
 	UFUNCTION()
 	void OnMeshOverlapBegin(class UPrimitiveComponent* OverlappedComp, class AActor*
@@ -50,5 +50,6 @@ OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool
 bFromSweep, const FHitResult& SweepResult);
 
 	UFUNCTION()
-	void Move();	
+	virtual	void Move();
+	void CheckDamageOrPush(FHitResult hitResult);
 };
