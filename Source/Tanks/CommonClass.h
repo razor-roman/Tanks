@@ -34,6 +34,7 @@ protected:
 	UAudioComponent* OnDestroyAudioEffect;
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
 	UParticleSystemComponent* OnDestroyParticleEffect;
+	
 	UPROPERTY(EditAnywhere,Category="Health");
 	float Health=1;
 	UPROPERTY()
@@ -66,8 +67,8 @@ public:
 public:
 	virtual void TakeDamage(FDamageData DamageData) override;
 	virtual void ScoreUp(float Score) override;
-	void MoveForward(float AxisValue);
-	void MoveLeft(float AxisValue);
+	virtual void MoveForward(float AxisValue);
+	virtual void MoveLeft(float AxisValue);
 	void MovePawn(float DeltaTime);
 	void RotatePawn(float DeltaTime);
 	void Fire();

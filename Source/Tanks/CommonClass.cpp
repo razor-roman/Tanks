@@ -22,7 +22,6 @@ ACommonClass::ACommonClass()
 	CannonSetupPoint = CreateDefaultSubobject<UArrowComponent>(TEXT("Cannon setup point"));
 	OnDestroyAudioEffect = CreateDefaultSubobject<UAudioComponent>(TEXT("OnDestroyAudioEffect"));
 	OnDestroyParticleEffect = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("OnDestroyParticleEffect"));
-	
 	RootComponent=Body;
 	//Body->SetupAttachment(RootComponent);
 	Turret->SetupAttachment(Body);
@@ -44,7 +43,7 @@ ACommonClass::ACommonClass()
 void ACommonClass::BeginPlay()
 {
 	Super::BeginPlay();
-	SetupCannon(CannonClass);
+	if(CannonClass) SetupCannon(CannonClass);
 	HealthComponent->SetHealth(Health);
 	PlayerStart=GetActorLocation();
 	
@@ -82,10 +81,12 @@ void ACommonClass::Die()
 	}
 	else
 	{
+		
 		SetActorLocation(PlayerStart);
 		HealthComponent->SetHealth(1);
 		OnDestroyParticleEffect->Deactivate();
 		OnDestroyAudioEffect->Stop();
+		
 	}
 }
 
@@ -136,7 +137,7 @@ void ACommonClass::RotatePawn(float DeltaTime)
 
 void ACommonClass::Fire()
 {
-	Cannon->Fire();
+	if(Cannon) Cannon->Fire();
 }
 
 void ACommonClass::SetupCannon(TSubclassOf<ACannon> cannon)

@@ -3,33 +3,33 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "TankPawn.h"
+#include "TankPawnThirdPerson.h"
 #include "GameFramework/PlayerController.h"
-#include "MyPlayerController.generated.h"
+#include "TankPawnThirdPersonController.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class TANKS_API AMyPlayerController : public APlayerController
+class TANKS_API ATankPawnThirdPersonController : public APlayerController
 {
 	GENERATED_BODY()
 protected:
 	UPROPERTY()
-	ATankPawn* TankPawn;
-	AMyPlayerController();
+	ATankPawnThirdPerson* TankPawn;
+	ATankPawnThirdPersonController();
 	UPROPERTY()
 	FVector MousePos;
 	virtual void Tick(float DeltaSeconds) override;
 protected:
 	virtual void BeginPlay() override;
-	virtual void  MoveForward(float AxisValue);
-	virtual void MoveLeftRight(float AxisValue);
+	void MoveForward(float AxisValue);
+	void MoveLeftRight(float AxisValue);
+	void Turn(float AxisValue);
+	void LookUp(float AxisValue);	
 	void Fire();
 	void FireSpecial();
-	void ChangeWeapon();
 public:
 	FVector GetMousePos() {return MousePos;};
 	virtual void SetupInputComponent() override;
-	
 };
