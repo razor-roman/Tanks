@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "DamageTaker.h"
-#include "HealthComponent.h"
 #include "MapLoader.h"
-#include "TankPawn.h"
+#include "ActorComponents/HealthComponent.h"
 #include "Components/ArrowComponent.h"
 #include "Components/BoxComponent.h"
 #include "Engine/TargetPoint.h"
 #include "GameFramework/Actor.h"
+#include "Interfaces/DamageTaker.h"
+#include "Vehicles/CommonClass.h"
 #include "TankFactory.generated.h"
 
 UCLASS()

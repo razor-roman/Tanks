@@ -3,7 +3,8 @@
 
 #include "WeaponBox.h"
 
-#include "TankPawn.h"
+#include "Tanks/Vehicles/TankPawnThirdPerson.h"
+
 
 AWeaponBox::AWeaponBox()
 {
@@ -14,7 +15,7 @@ void AWeaponBox::OnMeshOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor*
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	Super::OnMeshOverlapBegin(OverlappedComp, OtherActor, OtherComp, OtherBodyIndex, bFromSweep, SweepResult);
-	ATankPawn * playerPawn = Cast<ATankPawn>(OtherActor);
+	ATankPawnThirdPerson * playerPawn = Cast<ATankPawnThirdPerson>(OtherActor);
 	if(playerPawn->GetPatrollingPoints().Num()==0)
 	{		
 		playerPawn->SetupCannon(CannonClass);

@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameStructs.h"
+#include "Tanks/GameStructs.h"
 #include "UObject/Interface.h"
 #include "DamageTaker.generated.h"
 

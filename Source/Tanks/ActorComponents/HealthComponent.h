@@ -3,8 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameStructs.h"
 #include "Components/ActorComponent.h"
+#include "Tanks/GameStructs.h"
 #include "HealthComponent.generated.h"
 
 

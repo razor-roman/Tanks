@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Cannon.h"
+#include "../Cannon.h"
 #include "CommonItemClass.h"
 #include "WeaponBox.generated.h"
 

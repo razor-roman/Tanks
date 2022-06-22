@@ -3,8 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "TankPawnThirdPerson.h"
 #include "GameFramework/PlayerController.h"
+#include "Tanks/Vehicles/TankPawnThirdPerson.h"
 #include "TankPawnThirdPersonController.generated.h"
 
 /**

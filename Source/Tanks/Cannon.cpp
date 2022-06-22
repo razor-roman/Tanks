@@ -2,10 +2,11 @@
 
 
 #include "Cannon.h"
-#include "DamageTaker.h"
 #include "DrawDebugHelpers.h"
+#include "ObjectPool.h"
 #include "Components/ArrowComponent.h"
 #include "Components/AudioComponent.h"
+#include "Interfaces/DamageTaker.h"
 #include "Particles/ParticleSystemComponent.h"
 
 // Sets default values
@@ -15,19 +16,23 @@ ACannon::ACannon()
 	PrimaryActorTick.bCanEverTick = false;
 	USceneComponent * sceeneCpm =
 	CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
-	RootComponent = sceeneCpm;
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Cannon mesh"));
 	ShootEffect = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("ShootEffect"));
 	AudioEffect = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioEffect"));
 	ProjectileSpawnPoint = CreateDefaultSubobject<UArrowComponent>(TEXT("Spawn 	point"));
-	
-	ProjectileSpawnPoint->SetupAttachment(Mesh);
-	Mesh->SetupAttachment(RootComponent);
-	ShootEffect->SetupAttachment(ProjectileSpawnPoint);
-	AudioEffect->SetupAttachment(Mesh);
+	Pool = CreateDefaultSubobject<UObjectPool>(TEXT("Pool"));
 
+	RootComponent = sceeneCpm;
+	Mesh->SetupAttachment(RootComponent);
+	ProjectileSpawnPoint->SetupAttachment(Mesh);	
+	AudioEffect->SetupAttachment(Mesh);
+	ShootEffect->SetupAttachment(ProjectileSpawnPoint);
+	
+	ProjectileSpawnPoint->SetRelativeLocation(FVector(290,0,50));
+	
 	ShootEffect->SetAutoActivate(false);
 	AudioEffect->SetAutoActivate(false);
+	
 }
 
 // Called when the game starts or when spawned
@@ -64,17 +69,19 @@ void ACannon::Fire()
 	}
 	if(Type == ECannonType::FireProjectile)
 	{
-		GEngine->AddOnScreenDebugMessage(10, 1,FColor::Green, "Fire -	projectile");
+		auto projectile = Pool->GetProjectile();
+		/*GEngine->AddOnScreenDebugMessage(10, 1,FColor::Green, "Fire -	projectile");
 		AProjectile* projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileClass,
 			Mesh->GetComponentLocation(),
-			Mesh->GetComponentRotation());
+			Mesh->GetComponentRotation());*/
 		if(projectile)
-		{
-			projectile->Start();
+		{			
+			projectile->Start(ProjectileSpawnPoint->GetComponentLocation(),
+				ProjectileSpawnPoint->GetComponentRotation());
 		}
 		else
 		{
-			UE_LOG(LogTemp,Verbose,TEXT("NO PROJECTILE"));
+			UE_LOG(LogTemp,Warning,TEXT("NO PROJECTILE"));
 		}
 		ProjectileCount--;
 	}

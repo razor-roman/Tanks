@@ -3,7 +3,8 @@
 
 #include "AmmoBox.h"
 
-#include "TankPawn.h"
+#include "Tanks/Vehicles/TankPawn.h"
+
 
 AAmmoBox::AAmmoBox()
 {

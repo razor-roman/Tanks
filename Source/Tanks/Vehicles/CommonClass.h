@@ -3,13 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Cannon.h"
-#include "DamageTaker.h"
-#include "HealthComponent.h"
-#include "IScorable.h"
 #include "Components/BoxComponent.h"
 #include "Engine/TargetPoint.h"
 #include "GameFramework/Pawn.h"
+#include "Tanks/Cannon.h"
+#include "Tanks/ActorComponents/HealthComponent.h"
+#include "Tanks/Interfaces/DamageTaker.h"
+#include "Tanks/Interfaces/IScorable.h"
 #include "CommonClass.generated.h"
 
 UCLASS()

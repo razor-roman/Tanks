@@ -3,9 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CommonClass.h"
-#include "PhysicsComponent.h"
 #include "Projectile.h"
+#include "ActorComponents/PhysicsComponent.h"
 #include "PhysicsProjectile.generated.h"
 
 /**
@@ -47,7 +46,7 @@ protected:
 	bool bExplode=false;
 public:
 	APhysicsProjectile();
-	virtual void Start() override;
+	virtual void Start(FVector StartPos,FRotator ForwardVector) override;
 protected:
 	virtual void Move() override;
 	void Explode();

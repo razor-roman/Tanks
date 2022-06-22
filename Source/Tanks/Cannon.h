@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameStructs.h"
+#include "ObjectPool.h"
 #include "Projectile.h"
 #include "GameFramework/Actor.h"
 #include "Cannon.generated.h"
@@ -32,6 +33,8 @@ protected:
 	UAudioComponent* AudioEffect;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effects")
 	UForceFeedbackEffect * ShootForceEffect;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pool")	
+	UObjectPool* Pool;
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UMatineeCameraShake> ShootShake;
 	
@@ -49,7 +52,7 @@ protected:
 	ECannonType Type = ECannonType::FireProjectile;
 	FTimerHandle ReloadTimerHandle;
 	bool ReadyToFire = false;
-public:	
+public:
 	UPROPERTY(EditAnywhere)
 	float ProjectileCount=10;
 	UPROPERTY(EditAnywhere)
@@ -58,6 +61,7 @@ protected:
 	UPROPERTY(EditAnywhere)
 	float ProjectileAuto=3;
 	float tempProjectileAuto;
+	
 public:
 	void Fire();
 	void FireSpecial();

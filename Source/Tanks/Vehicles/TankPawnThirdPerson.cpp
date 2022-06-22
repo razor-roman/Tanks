@@ -3,7 +3,8 @@
 
 #include "TankPawnThirdPerson.h"
 
-#include "TankPawnThirdPersonController.h"
+#include "Tanks/Controllers/TankPawnThirdPersonController.h"
+
 
 ATankPawnThirdPerson::ATankPawnThirdPerson()
 {
@@ -40,9 +41,7 @@ ATankPawnThirdPerson::ATankPawnThirdPerson()
 
 void ATankPawnThirdPerson::Tick(float DeltaTime)
 {
-	Super::Tick(DeltaTime);
-	UE_LOG(LogTemp, Warning, TEXT("_targetTurn %f"),_targetTurn );
-	
+	Super::Tick(DeltaTime);	
 	FVector currentLocation = Body->GetRelativeLocation();
 	FVector forwardVector = GetActorForwardVector();
 	FVector movePosition = currentLocation+forwardVector*MoveSpeed*_targetForwardAxisValue*DeltaTime;

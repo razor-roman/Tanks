@@ -3,12 +3,13 @@
 
 #include "Projectile.h"
 
+#include <Actor.h>
+
 #include "ComponentUtils.h"
-#include "DamageTaker.h"
-#include "IScorable.h"
-#include "TankPawn.h"
 #include "Components/AudioComponent.h"
+#include "Interfaces/DamageTaker.h"
 #include "Particles/ParticleSystemComponent.h"
+#include "Vehicles/TankPawn.h"
 
 // Sets default values
 AProjectile::AProjectile()
@@ -45,22 +46,12 @@ void AProjectile::Tick(float DeltaTime)
 
 }
 
-void AProjectile::Destroy()
-{
-	OnDestroyParticleEffect->ActivateSystem();
-	OnDestroyAudioEffect->Play();
-	MoveSpeed=0;
-	Mesh->SetHiddenInGame(true);
-	SetLifeSpan(0.5);
-}
 
 
 void AProjectile::Move()
-{
-	FVector nextPosition = GetActorLocation() + GetActorForwardVector() * MoveSpeed
-* MoveRate;
-	SetActorLocation(nextPosition);
-	
+{	
+	FVector nextPosition = GetActorLocation() + GetActorForwardVector() * MoveSpeed * MoveRate;	
+	SetActorLocation(nextPosition);	
 }
 
 void AProjectile::CheckDamageOrPush(FHitResult hitResult)
@@ -94,11 +85,23 @@ void AProjectile::CheckDamageOrPush(FHitResult hitResult)
 	}
 }
 
-void AProjectile::Start()
+void AProjectile::Start(FVector StartPos,FRotator ForwardVector)
 {
+	Mesh->SetHiddenInGame(false);
+	SetActorLocation(StartPos);
+	SetActorRotation(ForwardVector);
 	GetWorld()->GetTimerManager().SetTimer(MovementTimerHandle,this,
 		&AProjectile::Move,MoveRate,true,MoveRate);
-	
+}
+
+void AProjectile::Stop()
+{
+	OnDestroyParticleEffect->ActivateSystem();
+	OnDestroyAudioEffect->Play();
+	Mesh->SetHiddenInGame(true);
+	GetWorld()->GetTimerManager().SetTimer(MovementTimerHandle,this,
+		&AProjectile::Move,0,false,0);
+	SetActorLocation(FVector().ZeroVector);
 }
 
 void AProjectile::OnMeshOverlapBegin(class UPrimitiveComponent* OverlappedComp, class AActor*
@@ -134,8 +137,8 @@ void AProjectile::OnMeshOverlapBegin(class UPrimitiveComponent* OverlappedComp, 
 				}
 			}
 		}
-		AProjectile::Destroy();
+		AProjectile::Stop();
 	}
-	AProjectile::Destroy();
+	AProjectile::Stop();
 }
 

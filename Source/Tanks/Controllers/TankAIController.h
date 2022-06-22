@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AIController.h"
-#include "TankPawn.h"
+#include "Tanks/Vehicles/CommonClass.h"
 #include "TankAIController.generated.h"
 
 /**

@@ -3,7 +3,6 @@
 
 #include "PhysicsProjectile.h"
 
-#include "DamageTaker.h"
 #include "DrawDebugHelpers.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Particles/ParticleSystemComponent.h"
@@ -15,7 +14,7 @@ APhysicsProjectile::APhysicsProjectile()
     TrailEffect->SetupAttachment(Mesh);
 }
 
-void APhysicsProjectile::Start()
+void APhysicsProjectile::Start(FVector StartPos,FRotator ForwardVector)
 {	
 	FVector actorLocation;
 	PlayerPawn = GetWorld()->GetFirstPlayerController()->GetPawn();	
@@ -31,7 +30,7 @@ void APhysicsProjectile::Start()
 		}
 	}
 	TragectoryPointIndex = 0;
-	Super::Start();
+	Super::Start(FVector().ZeroVector,FRotator().ZeroRotator);
 }
 
 void APhysicsProjectile::Move()

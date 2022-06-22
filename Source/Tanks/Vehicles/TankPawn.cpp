@@ -3,9 +3,9 @@
 
 #include "TankPawn.h"
 
-#include "MyPlayerController.h"
 #include "Components/ArrowComponent.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Tanks/Controllers/MyPlayerController.h"
 
 ATankPawn::ATankPawn()
 {

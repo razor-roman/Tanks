@@ -3,6 +3,7 @@
 
 #include "CommonClass.h"
 
+#include "DrawDebugHelpers.h"
 #include "TankPawn.h"
 #include "Components/ArrowComponent.h"
 #include "Components/AudioComponent.h"
@@ -32,7 +33,7 @@ ACommonClass::ACommonClass()
 	
 	HealthComponent->OnDie.AddUObject(this,&ACommonClass::Die);
 	HealthComponent->OnDamaged.AddUObject(this,&ACommonClass::DamageTaked);
-
+	
 	OnDestroyAudioEffect->SetAutoActivate(false);
 	OnDestroyParticleEffect->SetAutoActivate(false);
 	HitCollider->SetBoxExtent(FVector(150,150,50));
@@ -80,8 +81,7 @@ void ACommonClass::Die()
 		HitCollider->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldDynamic,ECollisionResponse::ECR_Ignore);
 	}
 	else
-	{
-		
+	{		
 		SetActorLocation(PlayerStart);
 		HealthComponent->SetHealth(1);
 		OnDestroyParticleEffect->Deactivate();
@@ -170,8 +170,9 @@ void ACommonClass::RotateTurretTo(FVector TargetPosition)
 	FRotator currRotation = Turret->GetComponentRotation();
 	targetRotation.Pitch = currRotation.Pitch;
 	targetRotation.Roll = currRotation.Roll;
-	Turret->SetWorldRotation(FMath::Lerp(currRotation, targetRotation, TurretRotationInterpolationKey));
-
+	Turret->SetWorldRotation(targetRotation);
+	//Turret->SetWorldRotation(FMath::Lerp(currRotation, targetRotation, TurretRotationInterpolationKey));
+	DrawDebugLine(GetWorld(), CannonSetupPoint->GetComponentLocation(), TargetPosition, FColor::Cyan, false, 1.0f, 0, 10);
 }
 
 TArray<FVector> ACommonClass::GetTargetingPoints()

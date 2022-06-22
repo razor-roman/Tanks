@@ -3,10 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Cannon.h"
 #include "CommonClass.h"
-#include "DamageTaker.h"
-#include "HealthComponent.h"
 #include "TankPawn.h"
 #include "Components/ArrowComponent.h"
 #include "Components/BoxComponent.h"

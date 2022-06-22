@@ -41,8 +41,8 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-	void Destroy();
-	virtual void Start();
+	virtual void Start(FVector StartPos,FRotator ForwardVector);
+	void Stop();
 protected:
 	UFUNCTION()
 	void OnMeshOverlapBegin(class UPrimitiveComponent* OverlappedComp, class AActor*
