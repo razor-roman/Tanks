@@ -17,32 +17,17 @@ UObjectPool::UObjectPool()
 
 AProjectile* UObjectPool::GetProjectile()
 {
-	if(index>=PoolSize-1)
+	index++;
+	if(index>=PoolSize)
 	{
 		index=0;
-	}
-	else
-	{
-		++index;
-	}
+	}	
 	AProjectile* projectile = ProjectilePool[index];
 	UE_LOG(LogTemp,Warning,TEXT("index= %f"),(float)index);
 	return projectile;
 }
 
 
-/*AProjectile* UObjectPool::SpawnProjectileObject()
-{
-	for (AProjectile* Projectile : ProjectilePool)
-	{
-		if(Projectile!=nullptr) 
-		{
-			Projectile->TeleportTo(FVector().ZeroVector,FRotator().ZeroRotator);
-		}
-		return Projectile; 
-	}
-	return nullptr;
-}*/
 
 
 // Called when the game starts

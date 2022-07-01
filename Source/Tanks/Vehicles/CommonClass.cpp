@@ -5,6 +5,7 @@
 
 #include "DrawDebugHelpers.h"
 #include "TankPawn.h"
+#include "Blueprint/UserWidget.h"
 #include "Components/ArrowComponent.h"
 #include "Components/AudioComponent.h"
 #include "Kismet/KismetMathLibrary.h"
@@ -23,6 +24,7 @@ ACommonClass::ACommonClass()
 	CannonSetupPoint = CreateDefaultSubobject<UArrowComponent>(TEXT("Cannon setup point"));
 	OnDestroyAudioEffect = CreateDefaultSubobject<UAudioComponent>(TEXT("OnDestroyAudioEffect"));
 	OnDestroyParticleEffect = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("OnDestroyParticleEffect"));
+	
 	RootComponent=Body;
 	//Body->SetupAttachment(RootComponent);
 	Turret->SetupAttachment(Body);
@@ -86,7 +88,7 @@ void ACommonClass::Die()
 		HealthComponent->SetHealth(1);
 		OnDestroyParticleEffect->Deactivate();
 		OnDestroyAudioEffect->Stop();
-		
+		bIsDead = true;
 	}
 }
 

@@ -22,10 +22,10 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="Health value")
+	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="MaxHealth value")
 	float MaxHealth= 10;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite,Category=" CurrentHealth value")
 	float CurrentHealth;
 
 public:	
@@ -35,6 +35,7 @@ public:
 	FOnHealthChanged OnDamaged;
 
 	void TakeDamage(FDamageData DamageData);
+	UFUNCTION()
 	float GetHealth() const;
 	float GetHealthState() const;
 	void AddHealth(float AdditionalHealthValue);

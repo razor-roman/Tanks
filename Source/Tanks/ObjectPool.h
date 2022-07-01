@@ -15,12 +15,8 @@ class TANKS_API UObjectPool : public UActorComponent
 	DECLARE_EVENT_OneParam(UObjectPool,FGetProjectile,AProjectile*)
 	DECLARE_EVENT(UObjectPool,FOnDie)
 public:	
-	//FGetProjectile GetProjectile;
-	FOnDie OnDie;
 	// Sets default values for this component's properties
 	UObjectPool();
-	//UPROPERTY(BlueprintCallable,Category="Object Pool")
-	//AProjectile* SpawnProjectileObject();
 	UFUNCTION()
 	AProjectile* GetProjectile();
 	

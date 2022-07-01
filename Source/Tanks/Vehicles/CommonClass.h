@@ -34,12 +34,13 @@ protected:
 	UAudioComponent* OnDestroyAudioEffect;
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
 	UParticleSystemComponent* OnDestroyParticleEffect;
-	
 	UPROPERTY(EditAnywhere,Category="Health");
 	float Health=1;
 	UPROPERTY()
 	float ScoreNumber=0;
 	FVector PlayerStart;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Variables")
+	bool bIsDead;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
