@@ -3,6 +3,7 @@
 
 #include "TankPawnThirdPerson.h"
 
+#include "Components/ArrowComponent.h"
 #include "Tanks/Controllers/TankPawnThirdPersonController.h"
 
 
@@ -15,13 +16,18 @@ ATankPawnThirdPerson::ATankPawnThirdPerson()
     //Arm->bInheritRoll = false;
 	Arm->SetupAttachment(Turret);
 	Arm->TargetArmLength = 1200;
-	Arm->SetRelativeRotation(FRotator(-10,0,0));
 	
+	Arm->SetRelativeRotation(FRotator(-10,0,0));	
 	Camera=CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(Arm);
 	Turret->SetRelativeLocation(FVector(-80,0,100));
 	Camera->SetRelativeRotation(FRotator(0,0,0));
+	Camera->SetRelativeLocation(FVector(0,0,500));
+	CannonSetupPoint->SetRelativeLocation(FVector(280,0,60));
 	Turret->SetAbsolute(false,true,false);
+	HitCollider->SetBoxExtent(FVector(100,100,100));
+	HitCollider->SetRelativeLocation(FVector(-80,0,100));
+	HitCollider->SetCollisionProfileName("Tank");
 	//Body->SetSimulatePhysics(true);
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> BodyVisualAsset(TEXT("StaticMesh'/Game/CSC/Meshes/SM_TANK_Base1.SM_TANK_Base1'"));
 	if(BodyVisualAsset.Succeeded())
@@ -36,6 +42,12 @@ ATankPawnThirdPerson::ATankPawnThirdPerson()
 		Turret->SetStaticMesh(TurretVisualAsset.Object);
 		Turret->SetRelativeLocation(FVector(-80,0,100));
 	}
+	
+}
+
+void ATankPawnThirdPerson::BeginPlay()
+{
+	Super::BeginPlay();
 	
 }
 

@@ -3,6 +3,8 @@
 
 #include "TankPawnThirdPersonController.h"
 
+#include "Blueprint/WidgetBlueprintLibrary.h"
+
 
 ATankPawnThirdPersonController::ATankPawnThirdPersonController()
 {
@@ -19,7 +21,7 @@ void ATankPawnThirdPersonController::BeginPlay()
 {
 	Super::BeginPlay();
 	TankPawn = Cast<ATankPawnThirdPerson>(GetPawn());
-	
+	HUD = Cast<AMyHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
 }
 
  void  ATankPawnThirdPersonController::MoveForward(float AxisValue)
@@ -52,6 +54,31 @@ void ATankPawnThirdPersonController::FireSpecial()
 	TankPawn->FireSpecial();
 }
 
+void ATankPawnThirdPersonController::Options()
+{
+	
+	if(HUD)
+	{
+		if(HUD->CurrentWidgetID==EWidgetID::MainMenu)
+		{			
+			HUD->UseWidget(EWidgetID::TankHUD,true,0);
+			APlayerController* PC = GetWorld()->GetFirstPlayerController();
+			if(PC)
+			{
+				UWidgetBlueprintLibrary::SetInputMode_GameOnly(PC);
+				PC->bShowMouseCursor = false;
+			}
+		}
+		else if(HUD->CurrentWidgetID==EWidgetID::Settings)
+		{
+			HUD->UseWidget(EWidgetID::MainMenu,true,0);
+		}
+		else
+		HUD->UseWidget(EWidgetID::MainMenu,false,0);
+	}
+	else UE_LOG(LogTemp,Warning,TEXT("NO HUD"));
+}
+
 
 void ATankPawnThirdPersonController::SetupInputComponent()
 {
@@ -62,5 +89,6 @@ void ATankPawnThirdPersonController::SetupInputComponent()
 	InputComponent->BindAxis("LookUp",this,&ATankPawnThirdPersonController::LookUp);
 	InputComponent->BindAction("Fire",EInputEvent::IE_Pressed,this,&ATankPawnThirdPersonController::Fire);
 	InputComponent->BindAction("AlternativeFire",EInputEvent::IE_Pressed,this,&ATankPawnThirdPersonController::FireSpecial);
+	InputComponent->BindAction("Options",EInputEvent::IE_Pressed,this,&ATankPawnThirdPersonController::Options);
 	
 }

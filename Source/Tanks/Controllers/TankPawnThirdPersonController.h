@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include "Tanks/UI/MyHUD.h"
 #include "Tanks/Vehicles/TankPawnThirdPerson.h"
 #include "TankPawnThirdPersonController.generated.h"
 
@@ -17,6 +18,8 @@ class TANKS_API ATankPawnThirdPersonController : public APlayerController
 protected:
 	UPROPERTY()
 	ATankPawnThirdPerson* TankPawn;
+	UPROPERTY()
+	AMyHUD* HUD;
 	ATankPawnThirdPersonController();
 	UPROPERTY()
 	FVector MousePos;
@@ -29,6 +32,7 @@ protected:
 	void LookUp(float AxisValue);	
 	void Fire();
 	void FireSpecial();
+	void Options();
 public:
 	FVector GetMousePos() {return MousePos;};
 	virtual void SetupInputComponent() override;

@@ -21,10 +21,10 @@ public:
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
-
+public:
 	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="MaxHealth value")
 	float MaxHealth= 10;
-
+protected:
 	UPROPERTY(BlueprintReadWrite,Category=" CurrentHealth value")
 	float CurrentHealth;
 

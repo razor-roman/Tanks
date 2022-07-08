@@ -3,11 +3,14 @@
 
 #include "CommonClass.h"
 
+#include "ChaosInterfaceWrapperCore.h"
 #include "DrawDebugHelpers.h"
 #include "TankPawn.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/ArrowComponent.h"
 #include "Components/AudioComponent.h"
+#include "Components/WidgetComponent.h"
+#include "Components/WidgetInteractionComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Particles/ParticleSystemComponent.h"
@@ -24,7 +27,15 @@ ACommonClass::ACommonClass()
 	CannonSetupPoint = CreateDefaultSubobject<UArrowComponent>(TEXT("Cannon setup point"));
 	OnDestroyAudioEffect = CreateDefaultSubobject<UAudioComponent>(TEXT("OnDestroyAudioEffect"));
 	OnDestroyParticleEffect = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("OnDestroyParticleEffect"));
+	WidgetComp = CreateDefaultSubobject<UWidgetComponent>("HealthBar");
+	//WidgetInteract = CreateDefaultSubobject<UWidgetInteractionComponent>("Widget Interact");
 	
+	
+	// UUserWidget* TestWidget = CreateWidget(this,HealthWidget);
+	// WidgetComp->SetWidget(TestWidget);
+	//
+	// WidgetComp->GetWidget();
+	//
 	RootComponent=Body;
 	//Body->SetupAttachment(RootComponent);
 	Turret->SetupAttachment(Body);
@@ -32,6 +43,7 @@ ACommonClass::ACommonClass()
 	CannonSetupPoint->AttachToComponent(Turret,FAttachmentTransformRules::KeepRelativeTransform);
 	OnDestroyAudioEffect->SetupAttachment(Body);
 	OnDestroyParticleEffect->SetupAttachment(Body);
+	WidgetComp->SetupAttachment(Body);
 	
 	HealthComponent->OnDie.AddUObject(this,&ACommonClass::Die);
 	HealthComponent->OnDamaged.AddUObject(this,&ACommonClass::DamageTaked);
@@ -39,7 +51,8 @@ ACommonClass::ACommonClass()
 	OnDestroyAudioEffect->SetAutoActivate(false);
 	OnDestroyParticleEffect->SetAutoActivate(false);
 	HitCollider->SetBoxExtent(FVector(150,150,50));
-	
+	WidgetComp->SetRelativeRotation(FRotator(0,0,180));
+	WidgetComp->SetRelativeScale3D(FVector(1,1,0.5));
 }
 
 // Called when the game starts or when spawned
@@ -49,7 +62,11 @@ void ACommonClass::BeginPlay()
 	if(CannonClass) SetupCannon(CannonClass);
 	HealthComponent->SetHealth(Health);
 	PlayerStart=GetActorLocation();
-	
+	WidgetComp->SetWidgetClass(HealthWidget);	
+	HealthBar = Cast<UHealthBar>(WidgetComp);
+	if(!HealthBar) UE_LOG(LogTemp, Warning, TEXT("No HealthBar"));
+	// WidgetInteract->PressKey(FKey());
+	// WidgetInteract->PressPointerKey(FKey());
 }
 
 void ACommonClass::Destroyed()
@@ -60,8 +77,7 @@ void ACommonClass::Destroyed()
 // Called every frame
 void ACommonClass::Tick(float DeltaTime)
 {
-	Super::Tick(DeltaTime);
-	
+	Super::Tick(DeltaTime);	
 }
 
 // Called to bind functionality to input
@@ -102,6 +118,11 @@ void ACommonClass::TakeDamage(FDamageData DamageData)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Turret %s taked damage:%f "), *GetName(),DamageData.DamageValue);
 	HealthComponent->TakeDamage(DamageData);
+	if (HealthBar) HealthBar->HealthBarChange(HealthComponent->GetHealth()/HealthComponent->MaxHealth);
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("No HealthBar"));
+	}
 }
 
 void ACommonClass::ScoreUp(float Score)

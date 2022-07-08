@@ -7,11 +7,14 @@
 #include "Engine/TargetPoint.h"
 #include "GameFramework/Pawn.h"
 #include "Tanks/Cannon.h"
+#include "Tanks/HealthBar.h"
 #include "Tanks/ActorComponents/HealthComponent.h"
 #include "Tanks/Interfaces/DamageTaker.h"
 #include "Tanks/Interfaces/IScorable.h"
 #include "CommonClass.generated.h"
 
+class UWidgetInteractionComponent;
+class UWidgetComponent;
 UCLASS()
 class TANKS_API ACommonClass : public APawn, public IDamageTaker, public IIScorable 
 {
@@ -34,6 +37,12 @@ protected:
 	UAudioComponent* OnDestroyAudioEffect;
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Components")
 	UParticleSystemComponent* OnDestroyParticleEffect;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Components")
+	UWidgetComponent* WidgetComp;
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Widget")
+	TSubclassOf<UHealthBar> HealthWidget;
+	// UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Widget")
+	// UWidgetInteractionComponent* WidgetInteract;
 	UPROPERTY(EditAnywhere,Category="Health");
 	float Health=1;
 	UPROPERTY()
@@ -55,11 +64,10 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 public:
-	
+	UPROPERTY()
+	UHealthBar* HealthBar;
 	UPROPERTY()
 	ACannon* Cannon;
-	UPROPERTY()
-	APawn* PlayerPawn;
 	
 	UFUNCTION()
 	void Die();

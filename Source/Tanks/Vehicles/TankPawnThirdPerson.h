@@ -12,14 +12,16 @@ class ATankPawnThirdPersonController;
 /**
  * 
  */
-UCLASS()
+UCLASS(Abstract)
 class TANKS_API ATankPawnThirdPerson : public ACommonClass
 {
 	GENERATED_BODY()
 public:
 	UPROPERTY()
-	ATankPawnThirdPersonController* TankController;
+	ATankPawnThirdPersonController* TankController;	
+	
 protected:
+	
 	float CurrentRightAxisValue;
 	UPROPERTY(EditAnywhere)
 	float TurretAngleMax = 45.0f;
@@ -29,6 +31,7 @@ protected:
 	UPROPERTY(EditAnywhere)
 	UCameraComponent* Camera;
 	ATankPawnThirdPerson();
+	virtual void BeginPlay() override;
 	void Tick(float DeltaTime) override;
 	float _targetForwardAxisValue;
 	float _targetLeftAxisValue;
