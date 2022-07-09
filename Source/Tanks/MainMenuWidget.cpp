@@ -4,6 +4,7 @@
 #include "MainMenuWidget.h"
 
 #include "Blueprint/WidgetBlueprintLibrary.h"
+#include "Kismet/GameplayStatics.h"
 #include "UI/MyHUD.h"
 
 void UMainMenuWidget::NativeConstruct()
@@ -45,19 +46,26 @@ void UMainMenuWidget::NativeDestruct()
 	{
 		QuitBtn->OnClicked.RemoveAll(this);
 	}
+	if(OptionBtn)
+	{
+		OptionBtn->OnClicked.RemoveAll(this);
+	}
 }
 
 void UMainMenuWidget::OnNewGameClicked()
-{
-	if(TestAnimation)
+{	
+	UGameplayStatics::OpenLevel(GetWorld(),"NewMap");  
+	APlayerController* PC = GetWorld()->GetFirstPlayerController();
+	if(PC)
 	{
-		PlayAnimation(TestAnimation);
+		UWidgetBlueprintLibrary::SetInputMode_GameOnly(PC);
+		PC->bShowMouseCursor = false;
 	}
 }
 
 void UMainMenuWidget::OnQuitClicked()
 {
-	//GEngine->Exec(GetWorld(),TEXT("Quit"));
+	UKismetSystemLibrary::QuitGame(GetWorld(),GetWorld()->GetFirstPlayerController(),EQuitPreference::Quit,true);
 }
 
 void UMainMenuWidget::OnOptionClicked()

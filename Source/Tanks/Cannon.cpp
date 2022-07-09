@@ -131,7 +131,7 @@ void ACannon::Fire()
 			ProjectileCount--;
 		}
 	}
-	UE_LOG(LogTemp, Warning, TEXT("ProjectileCount= %f, TraceCount= %f "), ProjectileCount,TraceCount);
+	//UE_LOG(LogTemp, Warning, TEXT("ProjectileCount= %f, TraceCount= %f "), ProjectileCount,TraceCount);
 	GetWorld()->GetTimerManager().SetTimer(ReloadTimerHandle, this, &ACannon::Reload, 1 / FireRate, false);
 	
 }

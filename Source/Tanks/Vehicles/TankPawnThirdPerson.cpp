@@ -17,6 +17,9 @@ ATankPawnThirdPerson::ATankPawnThirdPerson()
 	Arm->SetupAttachment(Turret);
 	Arm->TargetArmLength = 1200;
 	
+	WidgetComp->SetRelativeRotation(FRotator(0,0,180));
+	WidgetComp->SetRelativeLocation(FVector(0,0,300));
+	
 	Arm->SetRelativeRotation(FRotator(-10,0,0));	
 	Camera=CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(Arm);

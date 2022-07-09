@@ -32,7 +32,7 @@ protected:
 	void LookUp(float AxisValue);	
 	void Fire();
 	void FireSpecial();
-	void Options();
+	void MainMenu();
 public:
 	FVector GetMousePos() {return MousePos;};
 	virtual void SetupInputComponent() override;

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/BoxComponent.h"
+#include "Components/WidgetComponent.h"
 #include "Engine/TargetPoint.h"
 #include "GameFramework/Pawn.h"
 #include "Tanks/Cannon.h"
@@ -14,7 +15,6 @@
 #include "CommonClass.generated.h"
 
 class UWidgetInteractionComponent;
-class UWidgetComponent;
 UCLASS()
 class TANKS_API ACommonClass : public APawn, public IDamageTaker, public IIScorable 
 {

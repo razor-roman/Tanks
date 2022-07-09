@@ -23,7 +23,7 @@ AProjectile* UObjectPool::GetProjectile()
 		index=0;
 	}	
 	AProjectile* projectile = ProjectilePool[index];
-	UE_LOG(LogTemp,Warning,TEXT("index= %f"),(float)index);
+	//UE_LOG(LogTemp,Warning,TEXT("index= %f"),(float)index);
 	return projectile;
 }
 

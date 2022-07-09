@@ -18,5 +18,6 @@ protected:
 	UPROPERTY(meta=(BindWidget))
 	UProgressBar* HealthBar;
 public:
-	void HealthBarChange(float Health);
+	void SetHealthBarChange(float Health);
+	virtual void NativeConstruct() override;
 };
