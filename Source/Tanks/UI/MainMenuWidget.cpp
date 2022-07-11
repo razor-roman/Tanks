@@ -3,9 +3,9 @@
 
 #include "MainMenuWidget.h"
 
+#include "MyHUD.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Kismet/GameplayStatics.h"
-#include "UI/MyHUD.h"
 
 void UMainMenuWidget::NativeConstruct()
 {

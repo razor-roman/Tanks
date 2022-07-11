@@ -8,10 +8,10 @@
 #include "Engine/TargetPoint.h"
 #include "GameFramework/Pawn.h"
 #include "Tanks/Cannon.h"
-#include "Tanks/HealthBar.h"
 #include "Tanks/ActorComponents/HealthComponent.h"
 #include "Tanks/Interfaces/DamageTaker.h"
 #include "Tanks/Interfaces/IScorable.h"
+#include "Tanks/UI/HealthBar.h"
 #include "CommonClass.generated.h"
 
 class UWidgetInteractionComponent;
