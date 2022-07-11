@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Tanks/RadioButtonsWidgetStyle.h"
 #include "Widgets/SCompoundWidget.h"
 
 DECLARE_DELEGATE_OneParam(FOnRadioButtonChanged, int32 /*NewRadioChoise*/);
@@ -16,10 +17,15 @@ public:
 	{
 		
 	}
+	/** The visual style of the radio button */
+	SLATE_STYLE_ARGUMENT(FRadioButtonsStyle, Style)
+	
 	SLATE_EVENT(FOnRadioButtonChanged, OnRadioButtonChanged)
 	
-	SLATE_END_ARGS()	
+	SLATE_END_ARGS()
 	
+	/** See ButtonStyle attribute */
+	void SetRadioButtonStyle(const FRadioButtonsStyle* InStyle);
 	void Construct(const FArguments& InArgs);
 
 	int32 ButtonCount;
@@ -28,6 +34,11 @@ public:
 
 	void Build();
 protected:
+	
+	/** Style resource for check boxes */
+	const FCheckBoxStyle* CheckBoxStyle = nullptr;
+	/** Style resource for text */
+	const FTextBlockStyle* TextStyle = nullptr;
 	
 	FOnRadioButtonChanged OnRadioChoiceChanged;
 	

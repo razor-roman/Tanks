@@ -12,8 +12,9 @@ void URadioButtons::ReleaseSlateResources(bool bReleaseChildren)
 }
 
 TSharedRef<SWidget> URadioButtons::RebuildWidget()
-{
+{	
 	MyRadioButtons = SNew(SSRadioButtonsList)
+	.Style(&WidgetStyle)
 	.OnRadioButtonChanged_UObject(this,&URadioButtons::HandleOnRadioChoiceChanged);
 	auto index = UKismetMathLibrary::Clamp(Index,0,Buttons-1);
 	MyRadioButtons->CurrentIndex=index;

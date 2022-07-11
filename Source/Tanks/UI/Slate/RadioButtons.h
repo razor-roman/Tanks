@@ -23,6 +23,10 @@ public:
 	//~ Begin UVisual Interface
     virtual void ReleaseSlateResources(bool bReleaseChildren) override;
     //~ End UVisual Interface
+	
+	/** The button style used at runtime */
+	UPROPERTY(EditAnywhere, Category = "Appearance", meta = (DisplayName = "Style"))
+	FRadioButtonsStyle WidgetStyle;	
 
 protected:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Buttons")
