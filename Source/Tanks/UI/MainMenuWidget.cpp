@@ -6,6 +6,7 @@
 #include "MyHUD.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Kismet/GameplayStatics.h"
+#include "Tanks/StyleSet.h"
 
 void UMainMenuWidget::NativeConstruct()
 {
@@ -49,6 +50,20 @@ void UMainMenuWidget::NativeDestruct()
 	if(OptionBtn)
 	{
 		OptionBtn->OnClicked.RemoveAll(this);
+	}
+}
+
+void UMainMenuWidget::NativePreConstruct()
+{
+	Super::NativePreConstruct();
+	if (NewGameBtn)
+	{
+		NewGameBtn->SetBackgroundColor(FStyleSet::Get().GetColor("Red"));
+	}
+	if(LevelSelectButton)
+	{
+		//LevelSelectButton->WidgetStyle = FStyleSet::Get().GetWidgetStyle<FRadioButtonsStyle>("WS_RadioButtonsStyle");
+		
 	}
 }
 

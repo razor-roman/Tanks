@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/Button.h"
+#include "Slate/RadioButtons.h"
 #include "MainMenuWidget.generated.h"
 
 class AMyHUD;
@@ -18,6 +19,7 @@ class TANKS_API UMainMenuWidget : public UUserWidget
 public:
 	virtual  void NativeConstruct() override;
 	virtual void NativeDestruct() override;
+	virtual void NativePreConstruct() override;
 protected:
 	UPROPERTY(meta=(BindWidget))
 	UButton* NewGameBtn;
@@ -27,6 +29,8 @@ protected:
 	UButton* OptionBtn;
 	UPROPERTY(meta=(BindWidget))
 	UButton* QuitBtn;
+	UPROPERTY(meta=(BindWidget))
+	URadioButtons* LevelSelectButton;
 	UPROPERTY(meta=(BindWidgetAnim),Transient)
 	UWidgetAnimation* TestAnimation;
 	UPROPERTY()
