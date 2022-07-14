@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Tanks/RadioButtonsWidgetStyle.h"
+#include "Tanks/UI/Styles/RadioButtonsWidgetStyle.h"
 #include "Widgets/SCompoundWidget.h"
 
 DECLARE_DELEGATE_OneParam(FOnRadioButtonChanged, int32 /*NewRadioChoise*/);

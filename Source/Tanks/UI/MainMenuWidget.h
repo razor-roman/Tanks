@@ -33,6 +33,10 @@ protected:
 	URadioButtons* LevelSelectButton;
 	UPROPERTY(meta=(BindWidgetAnim),Transient)
 	UWidgetAnimation* TestAnimation;
+	UPROPERTY(EditAnywhere, Category = "Style");
+	FName ButtonStyleSet;
+	UPROPERTY(EditAnywhere, Category = "Style");
+	FName RadioButtonStyleSet;
 	UPROPERTY()
 	AMyHUD* HUD;
 	UFUNCTION()

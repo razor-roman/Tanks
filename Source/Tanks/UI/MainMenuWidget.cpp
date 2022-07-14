@@ -6,7 +6,7 @@
 #include "MyHUD.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Kismet/GameplayStatics.h"
-#include "Tanks/StyleSet.h"
+#include "Styles/StyleSet.h"
 
 void UMainMenuWidget::NativeConstruct()
 {
@@ -56,14 +56,25 @@ void UMainMenuWidget::NativeDestruct()
 void UMainMenuWidget::NativePreConstruct()
 {
 	Super::NativePreConstruct();
-	if (NewGameBtn)
+	 if (NewGameBtn)
+	 {
+	 	NewGameBtn->WidgetStyle = FStyleSet::Get ().GetWidgetStyle<FButtonStyle>(ButtonStyleSet);
+	 }
+	if (QuitBtn)
 	{
-		NewGameBtn->SetBackgroundColor(FStyleSet::Get().GetColor("Red"));
+		QuitBtn->WidgetStyle = FStyleSet::Get ().GetWidgetStyle<FButtonStyle>(ButtonStyleSet);
+	}
+	if (OptionBtn)
+	{
+		OptionBtn->WidgetStyle = FStyleSet::Get ().GetWidgetStyle<FButtonStyle>(ButtonStyleSet);
+	}
+	if (LoadBtn)
+	{
+		LoadBtn->WidgetStyle = FStyleSet::Get ().GetWidgetStyle<FButtonStyle>(ButtonStyleSet);
 	}
 	if(LevelSelectButton)
 	{
-		//LevelSelectButton->WidgetStyle = FStyleSet::Get().GetWidgetStyle<FRadioButtonsStyle>("WS_RadioButtonsStyle");
-		
+		LevelSelectButton->WidgetStyle = FStyleSet::Get().GetWidgetStyle<FRadioButtonsStyle>(RadioButtonStyleSet);		
 	}
 }
 

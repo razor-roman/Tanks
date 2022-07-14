@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "SSRadioButtonsList.h"
 #include "Components/Widget.h"
+#include "Tanks/UI/Styles/RadioButtonsWidgetStyle.h"
 #include "RadioButtons.generated.h"
 
 class SSRadioButtonsList;
