@@ -45,7 +45,7 @@ void UDraggableItem::NativeOnDragDetected(const FGeometry& InGeometry, const FPo
 		SetColorAndOpacity(FLinearColor(1,1,1,0.7));
 		SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 
-		TankOperation->OnDragCancelled.AddDynamic(this,&ThisClass::RestoreVusuals);
+		TankOperation->OnDragCancelled.AddDynamic(this,&ThisClass::RestoreVisuals);
 	}
 	else
 	{

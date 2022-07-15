@@ -84,6 +84,15 @@ void ATankPawnThirdPersonController::MainMenu()
 }
 
 
+void ATankPawnThirdPersonController::OnLeftMouseButtonUp()
+{
+	if(OnMouseButtonUp.IsBound())
+	{
+		OnMouseButtonUp.Broadcast();
+	}
+	
+}
+
 void ATankPawnThirdPersonController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
@@ -94,5 +103,5 @@ void ATankPawnThirdPersonController::SetupInputComponent()
 	InputComponent->BindAction("Fire",EInputEvent::IE_Pressed,this,&ATankPawnThirdPersonController::Fire);
 	InputComponent->BindAction("AlternativeFire",EInputEvent::IE_Pressed,this,&ATankPawnThirdPersonController::FireSpecial);
 	InputComponent->BindAction("MainMenu",EInputEvent::IE_Pressed,this,&ATankPawnThirdPersonController::MainMenu);
-	
+	InputComponent->BindKey(EKeys::LeftMouseButton,IE_Released,this,&ThisClass::OnLeftMouseButtonUp);
 }

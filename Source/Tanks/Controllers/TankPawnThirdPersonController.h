@@ -35,5 +35,7 @@ protected:
 	void MainMenu();
 public:
 	FVector GetMousePos() {return MousePos;};
-	virtual void SetupInputComponent() override;
+	void OnLeftMouseButtonUp();
+	virtual void SetupInputComponent() override;	
+	FSimpleMulticastDelegate OnMouseButtonUp;
 };

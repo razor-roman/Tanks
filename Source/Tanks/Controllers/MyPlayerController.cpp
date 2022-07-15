@@ -22,7 +22,6 @@ void AMyPlayerController::Tick(float DeltaSeconds)
 	FVector dir = MousePos - pawnPos;
 	dir.Normalize();
 	MousePos= pawnPos+dir*1000;
-	//DrawDebugLine(GetWorld(), pawnPos, MousePos, FColor::Green, false, 0.1f, 0, 5);
 }
 
 void AMyPlayerController::BeginPlay()
