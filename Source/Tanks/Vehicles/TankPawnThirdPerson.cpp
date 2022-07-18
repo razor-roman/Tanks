@@ -45,13 +45,17 @@ ATankPawnThirdPerson::ATankPawnThirdPerson()
 		Turret->SetStaticMesh(TurretVisualAsset.Object);
 		Turret->SetRelativeLocation(FVector(-80,0,100));
 	}
+
+	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>("Inventory");
+	InventoryManagerComponent = CreateDefaultSubobject<UInventoryManagerComponent>("InventoryManager");
+
 	
 }
 
 void ATankPawnThirdPerson::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	InventoryManagerComponent->Init(InventoryComponent);
 }
 
 void ATankPawnThirdPerson::Tick(float DeltaTime)
