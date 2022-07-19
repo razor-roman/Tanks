@@ -55,7 +55,6 @@ ATankPawnThirdPerson::ATankPawnThirdPerson()
 void ATankPawnThirdPerson::BeginPlay()
 {
 	Super::BeginPlay();
-	InventoryManagerComponent->Init(InventoryComponent);
 }
 
 void ATankPawnThirdPerson::Tick(float DeltaTime)

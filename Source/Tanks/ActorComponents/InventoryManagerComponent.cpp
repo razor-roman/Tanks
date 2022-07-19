@@ -16,11 +16,11 @@ UInventoryManagerComponent::UInventoryManagerComponent()
 void UInventoryManagerComponent::Init(UInventoryComponent* InInventoryComponent)
 {
 	LocalInventoryComponent = InInventoryComponent;
-	if (LocalInventoryComponent && InventoryItemsData) // TODO comment
+	if (LocalInventoryComponent && InventoryItemsData) 
     {
 		ensure(InventoryWidgetClass);
 		InventoryWidget = CreateWidget<UInventoryWidget>(GetWorld(),InventoryWidgetClass);
-		InventoryWidget->AddToViewport();
+		//InventoryWidget->AddToViewport();
 		InventoryWidget->Init(FMath::Max(LocalInventoryComponent->GetItemsNum(), MinInventorySize));
 		for (auto& Item : LocalInventoryComponent->GetItems())
 		{
@@ -30,9 +30,11 @@ void UInventoryManagerComponent::Init(UInventoryComponent* InInventoryComponent)
 				ItemData ->Icon.LoadSynchronous();
 				InventoryWidget->AddItem(Item.Value, *ItemData, Item.Key);
 			}
+			else UE_LOG(LogActor,Warning,TEXT("!ItemData"));
 		}	
     }
 	else UE_LOG(LogActor,Warning,TEXT("!LocalInventoryComponent && InventoryItemsData"));
+	
 }
 
 FInventoryItemInfo* UInventoryManagerComponent::GetItemData(FName ItemID)

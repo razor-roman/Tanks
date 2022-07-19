@@ -13,7 +13,8 @@ enum class EWidgetID : uint8
 	PauseMenu,
 	Settings,
 	TankHUD,
-	GameOver
+	GameOver,
+	Inventory,
 };
 /**
  * 

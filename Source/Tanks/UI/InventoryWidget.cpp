@@ -25,7 +25,7 @@ void UInventoryWidget::Init(int32 ItemsNum)
 
 bool UInventoryWidget::AddItem(const FInventorySlotInfo& Item, const FInventoryItemInfo& ItemInfo, int32 SlotPosition)
 {
-	if (ItemInfo.Type == EItemType::IT_Currency)
+	if (ItemInfo.Type == EItemType::IT_Currency) //it's inventory
 	{
 		if (GoldCell)
 		{
@@ -35,8 +35,9 @@ bool UInventoryWidget::AddItem(const FInventorySlotInfo& Item, const FInventoryI
 	}
 	if (ItemCellsGrid)
 	{
+		
 		UInventoryCellWidget * WidgetToAddItem = nullptr;
-		UInventoryCellWidget ** WidgetToAddItemPtr =
+		UInventoryCellWidget ** WidgetToAddItemPtr = 
 		CellWidgets.FindByPredicate([SlotPosition](UInventoryCellWidget * Widget)
 		{
 		return Widget && Widget->IndexInInventory == SlotPosition;
@@ -44,6 +45,7 @@ bool UInventoryWidget::AddItem(const FInventorySlotInfo& Item, const FInventoryI
 		if (WidgetToAddItemPtr)
 		{
 			WidgetToAddItem = *WidgetToAddItemPtr;
+			
 		}
 		else
 		{
@@ -51,7 +53,7 @@ bool UInventoryWidget::AddItem(const FInventorySlotInfo& Item, const FInventoryI
 			{
 				if (!CellWidget->HasItem())
 				{
-					WidgetToAddItem = CellWidget;
+					WidgetToAddItem = CellWidget;					
 					break;
 				}
 			}
@@ -59,8 +61,8 @@ bool UInventoryWidget::AddItem(const FInventorySlotInfo& Item, const FInventoryI
 		if (WidgetToAddItem)
 		{
 			return WidgetToAddItem->AddItem(Item, ItemInfo);
-		}
-	}
+		}		
+	}	
 	return false;
 }
 

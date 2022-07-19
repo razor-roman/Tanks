@@ -17,6 +17,10 @@ class TANKS_API ATankPawnThirdPersonController : public APlayerController
 	GENERATED_BODY()
 protected:
 	UPROPERTY()
+	UInventoryComponent * InventoryComponent;
+	UPROPERTY()
+	UInventoryManagerComponent * InventoryManagerComponent;
+	UPROPERTY()
 	ATankPawnThirdPerson* TankPawn;
 	UPROPERTY()
 	AMyHUD* HUD;
@@ -33,6 +37,7 @@ protected:
 	void Fire();
 	void FireSpecial();
 	void MainMenu();
+	void Inventory();
 public:
 	FVector GetMousePos() {return MousePos;};
 	void OnLeftMouseButtonUp();

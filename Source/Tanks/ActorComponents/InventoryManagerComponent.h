@@ -35,7 +35,6 @@ protected:
 	TSubclassOf<UInventoryWidget> InventoryWidgetClass;
 	UPROPERTY(EditAnywhere)
 	int32 MinInventorySize = 20;
-
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;

@@ -21,8 +21,13 @@ void ATankPawnThirdPersonController::BeginPlay()
 {
 	Super::BeginPlay();
 	TankPawn = Cast<ATankPawnThirdPerson>(GetPawn());
+	//InventoryManagerComponent = TankPawn->GetComponentByClass(); // TODO class CAST
+	InventoryComponent = Cast<UInventoryComponent>(TankPawn);	
+	if(!InventoryManagerComponent || !InventoryComponent)
+	UE_LOG(LogActor,Warning,TEXT("!InventoryManagerComponent || !InventoryComponent"));
 	HUD = Cast<AMyHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
 	HUD->UseWidget(EWidgetID::TankHUD,true,0);
+	
 }
 
  void  ATankPawnThirdPersonController::MoveForward(float AxisValue)
@@ -83,6 +88,32 @@ void ATankPawnThirdPersonController::MainMenu()
 	else UE_LOG(LogTemp,Warning,TEXT("NO HUD"));
 }
 
+void ATankPawnThirdPersonController::Inventory()
+{
+	APlayerController* PC = GetWorld()->GetFirstPlayerController();
+	
+	InventoryManagerComponent->Init(InventoryComponent);	
+	if(HUD)
+	{
+		if(HUD->CurrentWidgetID==EWidgetID::Inventory)
+		{			
+			HUD->UseWidget(EWidgetID::TankHUD,true,0);
+			if(PC)
+			{
+				UWidgetBlueprintLibrary::SetInputMode_GameOnly(PC);
+				PC->bShowMouseCursor = false;
+			}
+		}
+		else
+		{
+			HUD->UseWidget(EWidgetID::Inventory,true,0);
+			UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(PC);
+			PC->bShowMouseCursor = true;
+		}
+	}
+	else UE_LOG(LogTemp,Warning,TEXT("NO HUD"));
+}
+
 
 void ATankPawnThirdPersonController::OnLeftMouseButtonUp()
 {
@@ -96,12 +127,13 @@ void ATankPawnThirdPersonController::OnLeftMouseButtonUp()
 void ATankPawnThirdPersonController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
-	InputComponent->BindAxis("MoveForwardBackward",this,&ATankPawnThirdPersonController::MoveForward);
-	InputComponent->BindAxis("MoveLeftRight",this,&ATankPawnThirdPersonController::MoveLeftRight);
-	InputComponent->BindAxis("Turn",this,&ATankPawnThirdPersonController::Turn);
-	InputComponent->BindAxis("LookUp",this,&ATankPawnThirdPersonController::LookUp);
-	InputComponent->BindAction("Fire",EInputEvent::IE_Pressed,this,&ATankPawnThirdPersonController::Fire);
-	InputComponent->BindAction("AlternativeFire",EInputEvent::IE_Pressed,this,&ATankPawnThirdPersonController::FireSpecial);
-	InputComponent->BindAction("MainMenu",EInputEvent::IE_Pressed,this,&ATankPawnThirdPersonController::MainMenu);
+	InputComponent->BindAxis("MoveForwardBackward",this,&ThisClass::MoveForward);
+	InputComponent->BindAxis("MoveLeftRight",this,&ThisClass::MoveLeftRight);
+	InputComponent->BindAxis("Turn",this,&ThisClass::Turn);
+	InputComponent->BindAxis("LookUp",this,&ThisClass::LookUp);
+	InputComponent->BindAction("Fire",EInputEvent::IE_Pressed,this,&ThisClass::Fire);
+	InputComponent->BindAction("AlternativeFire",EInputEvent::IE_Pressed,this,&ThisClass::FireSpecial);
+	InputComponent->BindAction("MainMenu",EInputEvent::IE_Pressed,this,&ThisClass::MainMenu);
+	InputComponent->BindAction("Inventory",EInputEvent::IE_Pressed,this,&ThisClass::Inventory);
 	InputComponent->BindKey(EKeys::LeftMouseButton,IE_Released,this,&ThisClass::OnLeftMouseButtonUp);
 }
