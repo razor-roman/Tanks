@@ -15,6 +15,7 @@ enum class EWidgetID : uint8
 	TankHUD,
 	GameOver,
 	Inventory,
+	DragDrop,
 };
 /**
  * 

@@ -89,14 +89,14 @@ void ACommonClass::Die()
 	UE_LOG(LogTemp, Warning, TEXT("ACommonClass::Die"));
 	OnDestroyParticleEffect->ActivateSystem();
 	OnDestroyAudioEffect->Play();	
-	if(!Controller->IsPlayerController())
+	/*if(!Controller->IsPlayerController() && Controller) // TODO Controller Error when collapse with projectle.
 	{
 		Controller->Destroy();
 		MoveLeft(0);
 		Body->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldDynamic,ECollisionResponse::ECR_Ignore);
 		HitCollider->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldDynamic,ECollisionResponse::ECR_Ignore);
 	}
-	else
+	else*/
 	{		
 		SetActorLocation(PlayerStart);
 		HealthComponent->SetHealth(1);
@@ -184,6 +184,7 @@ void ACommonClass::SetupCannon(TSubclassOf<ACannon> cannon)
 	Cannon->AttachToComponent(CannonSetupPoint,FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 
 }
+
 
 void ACommonClass::RotateTurretTo(FVector TargetPosition)
 {

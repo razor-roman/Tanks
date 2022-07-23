@@ -6,8 +6,8 @@
 #include "CommonClass.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "Tanks/ActorComponents/InventoryComponent.h"
-#include "Tanks/ActorComponents/InventoryManagerComponent.h"
+#include "Tanks/UI/Inventory/Components/InventoryComponent.h"
+#include "Tanks/UI/Inventory/Components/InventoryManagerComponent.h"
 #include "TankPawnThirdPerson.generated.h"
 
 class ATankPawnThirdPersonController;
@@ -21,18 +21,16 @@ class TANKS_API ATankPawnThirdPerson : public ACommonClass
 public:
 	UPROPERTY()
 	ATankPawnThirdPersonController* TankController;	
-	
-protected:
-	
-	float CurrentRightAxisValue;
-	UPROPERTY(EditAnywhere)
-	float TurretAngleMax = 45.0f;
-	float TurretAngleMin = -15.0f;
-	
 	UPROPERTY(EditDefaultsOnly)
 	UInventoryComponent * InventoryComponent;
 	UPROPERTY(EditDefaultsOnly)
 	UInventoryManagerComponent * InventoryManagerComponent;
+	
+protected:	
+	float CurrentRightAxisValue;
+	UPROPERTY(EditAnywhere)
+	float TurretAngleMax = 45.0f;
+	float TurretAngleMin = -15.0f;
 	
 	UPROPERTY(EditAnywhere)
 	USpringArmComponent* Arm;
@@ -52,4 +50,5 @@ public:
 	void Turn(float AxisValue);
 	void LookUp(float AxisValue);
 	void FireSpecial();
+	
 };

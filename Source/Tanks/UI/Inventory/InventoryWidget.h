@@ -17,10 +17,12 @@ class TANKS_API UInventoryWidget : public UUserWidget
 {
 	GENERATED_BODY()
 public:
+	FOnItemDrop OnItemDrop;
     virtual void NativeConstruct() override;
     void Init(int32 ItemsNum);
     bool AddItem(const FInventorySlotInfo& Item, const FInventoryItemInfo& ItemInfo,int32 SlotPosition = -1);
 protected:
+	void OnItemDropped(UInventoryCellWidget * DraggedFrom,UInventoryCellWidget * DroppedTo);
 	UPROPERTY(meta = (BindWidgetOptional))
 	UUniformGridPanel* ItemCellsGrid;
 	UPROPERTY(EditDefaultsOnly)

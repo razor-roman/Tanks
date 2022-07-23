@@ -20,8 +20,9 @@ void UInventoryManagerComponent::Init(UInventoryComponent* InInventoryComponent)
     {
 		ensure(InventoryWidgetClass);
 		InventoryWidget = CreateWidget<UInventoryWidget>(GetWorld(),InventoryWidgetClass);
-		//InventoryWidget->AddToViewport();
+		InventoryWidget->AddToViewport();
 		InventoryWidget->Init(FMath::Max(LocalInventoryComponent->GetItemsNum(), MinInventorySize));
+		InventoryWidget->OnItemDrop.AddUObject(this,&UInventoryManagerComponent::OnItemDropped);
 		for (auto& Item : LocalInventoryComponent->GetItems())
 		{
 			FInventoryItemInfo* ItemData = GetItemData(Item.Value.Id);
@@ -52,6 +53,22 @@ void UInventoryManagerComponent::BeginPlay()
 	
 }
 
+
+void UInventoryManagerComponent::OnItemDropped(UInventoryCellWidget* From, UInventoryCellWidget* To)
+{
+	FInventorySlotInfo FromItem = From->GetItem();
+	FInventorySlotInfo ToItem = To->GetItem();
+
+	From->Clear();
+	To->Clear();
+
+	To->AddItem(FromItem,*GetItemData(FromItem.Id));
+
+	if(!ToItem.Id.IsNone())
+	{
+		
+	}
+}
 
 // Called every frame
 void UInventoryManagerComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)

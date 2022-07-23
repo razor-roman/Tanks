@@ -10,6 +10,7 @@ enum class EItemType : uint8
 	IT_Equipment,
 	IT_Consumable
 	};
+
 UENUM()
 enum class EItemRarity : uint8
 {
@@ -19,6 +20,10 @@ enum class EItemRarity : uint8
 	IR_Epir,
 	IR_Legendary
 };
+
+class UInventoryCellWidget;
+DECLARE_MULTICAST_DELEGATE_TwoParams(FOnItemDrop, UInventoryCellWidget* /*from*/, UInventoryCellWidget* /*to*/)
+
 USTRUCT(BlueprintType)
 struct FInventoryItemInfo : public FTableRowBase
 {

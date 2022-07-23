@@ -5,7 +5,8 @@
 #include "CoreMinimal.h"
 #include "InventoryComponent.h"
 #include "Components/ActorComponent.h"
-#include "Tanks/UI/InventoryWidget.h"
+#include "Tanks/UI/Inventory/FInventoryItemInfo.h"
+#include "Tanks/UI/Inventory/InventoryWidget.h"
 #include "InventoryManagerComponent.generated.h"
 
 
@@ -35,6 +36,7 @@ protected:
 	TSubclassOf<UInventoryWidget> InventoryWidgetClass;
 	UPROPERTY(EditAnywhere)
 	int32 MinInventorySize = 20;
+	void OnItemDropped(UInventoryCellWidget* From,UInventoryCellWidget* To);
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;

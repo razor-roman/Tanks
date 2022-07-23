@@ -21,12 +21,11 @@ void ATankPawnThirdPersonController::BeginPlay()
 {
 	Super::BeginPlay();
 	TankPawn = Cast<ATankPawnThirdPerson>(GetPawn());
-	//InventoryManagerComponent = TankPawn->GetComponentByClass(); // TODO class CAST
-	InventoryComponent = Cast<UInventoryComponent>(TankPawn);	
-	if(!InventoryManagerComponent || !InventoryComponent)
-	UE_LOG(LogActor,Warning,TEXT("!InventoryManagerComponent || !InventoryComponent"));
+	
+	
 	HUD = Cast<AMyHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
 	HUD->UseWidget(EWidgetID::TankHUD,true,0);
+	PC = GetWorld()->GetFirstPlayerController();
 	
 }
 
@@ -62,18 +61,13 @@ void ATankPawnThirdPersonController::FireSpecial()
 
 void ATankPawnThirdPersonController::MainMenu()
 {
-	
-	if(HUD)
+	if(HUD && PC)
 	{
 		if(HUD->CurrentWidgetID==EWidgetID::MainMenu)
 		{			
 			HUD->UseWidget(EWidgetID::TankHUD,true,0);
-			APlayerController* PC = GetWorld()->GetFirstPlayerController();
-			if(PC)
-			{
-				UWidgetBlueprintLibrary::SetInputMode_GameOnly(PC);
-				PC->bShowMouseCursor = false;
-			}
+			UWidgetBlueprintLibrary::SetInputMode_GameOnly(PC);
+			PC->bShowMouseCursor = false;
 		}
 		else if(HUD->CurrentWidgetID==EWidgetID::Settings)
 		{
@@ -81,7 +75,7 @@ void ATankPawnThirdPersonController::MainMenu()
 		}
 		else
 		{
-			HUD->UseWidget(EWidgetID::MainMenu,false,0);			
+			HUD->UseWidget(EWidgetID::MainMenu,true,0);			
 		}
 		
 	}
@@ -90,19 +84,18 @@ void ATankPawnThirdPersonController::MainMenu()
 
 void ATankPawnThirdPersonController::Inventory()
 {
-	APlayerController* PC = GetWorld()->GetFirstPlayerController();
-	
-	InventoryManagerComponent->Init(InventoryComponent);	
-	if(HUD)
+	InventoryManagerComponent = TankPawn->InventoryManagerComponent; // TODO class CAST
+	if(!InventoryManagerComponent) UE_LOG(LogActor,Warning,TEXT("!InventoryManagerComponent"));	
+	InventoryComponent = TankPawn->InventoryComponent; // TODO class CAST
+	if(!InventoryComponent) UE_LOG(LogActor,Warning,TEXT("!InventoryComponent"));
+	InventoryManagerComponent->Init(InventoryComponent);
+	if(HUD && PC)
 	{
 		if(HUD->CurrentWidgetID==EWidgetID::Inventory)
 		{			
-			HUD->UseWidget(EWidgetID::TankHUD,true,0);
-			if(PC)
-			{
-				UWidgetBlueprintLibrary::SetInputMode_GameOnly(PC);
-				PC->bShowMouseCursor = false;
-			}
+			HUD->UseWidget(EWidgetID::TankHUD,true,0);			
+			UWidgetBlueprintLibrary::SetInputMode_GameOnly(PC);
+			PC->bShowMouseCursor = false;			
 		}
 		else
 		{
@@ -112,6 +105,30 @@ void ATankPawnThirdPersonController::Inventory()
 		}
 	}
 	else UE_LOG(LogTemp,Warning,TEXT("NO HUD"));
+}
+
+void ATankPawnThirdPersonController::DragAndDrop()
+{
+	SetWidget(EWidgetID::DragDrop,true,0);
+}
+
+void ATankPawnThirdPersonController::SetWidget(EWidgetID Widget, bool bRemotePrevious, int ZOrder)
+{	
+	if(HUD && PC)
+	{
+		if(HUD->CurrentWidgetID==Widget)
+		{
+			HUD->UseWidget(EWidgetID::TankHUD,bRemotePrevious,ZOrder);			
+			UWidgetBlueprintLibrary::SetInputMode_GameOnly(PC);
+			PC->bShowMouseCursor = false;	
+		}
+		else
+		{
+			HUD->UseWidget(Widget,bRemotePrevious,ZOrder);
+			UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(PC);
+			PC->bShowMouseCursor = true;
+		}
+	}
 }
 
 
@@ -135,5 +152,6 @@ void ATankPawnThirdPersonController::SetupInputComponent()
 	InputComponent->BindAction("AlternativeFire",EInputEvent::IE_Pressed,this,&ThisClass::FireSpecial);
 	InputComponent->BindAction("MainMenu",EInputEvent::IE_Pressed,this,&ThisClass::MainMenu);
 	InputComponent->BindAction("Inventory",EInputEvent::IE_Pressed,this,&ThisClass::Inventory);
+	InputComponent->BindAction("DragAndDrop",EInputEvent::IE_Pressed,this,&ThisClass::DragAndDrop);
 	InputComponent->BindKey(EKeys::LeftMouseButton,IE_Released,this,&ThisClass::OnLeftMouseButtonUp);
 }

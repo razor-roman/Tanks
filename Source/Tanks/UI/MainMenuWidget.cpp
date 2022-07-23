@@ -24,16 +24,7 @@ void UMainMenuWidget::NativeConstruct()
 		OptionBtn->OnClicked.AddDynamic(this,&UMainMenuWidget::OnOptionClicked);
 	}
 	PlayAnimation(TestAnimation);
-	HUD = Cast<AMyHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
-	if(GetWorld())
-	{
-		APlayerController* PC = GetWorld()->GetFirstPlayerController();
-		if(PC)
-		{
-			UWidgetBlueprintLibrary::SetInputMode_GameAndUIEx(PC,nullptr,EMouseLockMode::LockAlways,false);
-			PC->bShowMouseCursor = true;
-		}
-	}
+	HUD = Cast<AMyHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());	
 }
 
 void UMainMenuWidget::NativeDestruct()

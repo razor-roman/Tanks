@@ -55,6 +55,7 @@ ATankPawnThirdPerson::ATankPawnThirdPerson()
 void ATankPawnThirdPerson::BeginPlay()
 {
 	Super::BeginPlay();
+		
 }
 
 void ATankPawnThirdPerson::Tick(float DeltaTime)

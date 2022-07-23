@@ -8,6 +8,7 @@
 #include "Tanks/Vehicles/TankPawnThirdPerson.h"
 #include "TankPawnThirdPersonController.generated.h"
 
+class UWidgetBlueprintLibrary;
 /**
  * 
  */
@@ -24,6 +25,8 @@ protected:
 	ATankPawnThirdPerson* TankPawn;
 	UPROPERTY()
 	AMyHUD* HUD;
+	UPROPERTY()
+	APlayerController* PC;
 	ATankPawnThirdPersonController();
 	UPROPERTY()
 	FVector MousePos;
@@ -38,6 +41,8 @@ protected:
 	void FireSpecial();
 	void MainMenu();
 	void Inventory();
+	void DragAndDrop();
+	void SetWidget(EWidgetID Widget, bool bRemotePrevious,int ZOrder=0);
 public:
 	FVector GetMousePos() {return MousePos;};
 	void OnLeftMouseButtonUp();

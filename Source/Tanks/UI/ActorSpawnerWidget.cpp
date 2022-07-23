@@ -2,7 +2,7 @@
 
 
 #include "ActorSpawnerWidget.h"
-
+#include "IImageWrapper.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "Tanks/Controllers/TankPawnThirdPersonController.h"
@@ -13,6 +13,20 @@ void UActorSpawnerWidget::OnMouseButtonUp()
 	UWidgetBlueprintLibrary::SetInputMode_GameOnly(PlayerController);
 }
 
+void UActorSpawnerWidget::NativeOnMouseEnter(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+{
+	UE_LOG(LogActor,Warning,TEXT("ENTER"));
+	Panel->SetVisibility(ESlateVisibility::Visible);
+	Super::NativeOnMouseEnter(InGeometry, InMouseEvent);
+}
+
+void UActorSpawnerWidget::NativeOnMouseLeave(const FPointerEvent& InMouseEvent)
+{
+	UE_LOG(LogActor,Warning,TEXT("LEAVE"));
+	Panel->SetVisibility(ESlateVisibility::Hidden);
+	Super::NativeOnMouseLeave(InMouseEvent);
+}
+
 void UActorSpawnerWidget::NativePreConstruct()
 {
 	Super::NativePreConstruct();
@@ -20,6 +34,7 @@ void UActorSpawnerWidget::NativePreConstruct()
 	{
 		DraggedText->SetText(DraggedName);
 	}
+	
 }
 
 void UActorSpawnerWidget::NativeConstruct()
@@ -31,13 +46,25 @@ void UActorSpawnerWidget::NativeConstruct()
 	{
 		MyController->OnMouseButtonUp.AddUObject(this,&ThisClass::OnMouseButtonUp);
 	}
+	Panel->SetVisibility(ESlateVisibility::Hidden);	;
+	TextPopUp->SetText(FText::FromString(SpawnedActor->GetName()));
+	/*ACommonClass* CommonClass = Cast<ACommonClass>(SpawnedActor->GetClass());
+	if(!CommonClass)
+	{
+		UE_LOG(LogActor,Warning,TEXT("!CommonClass"));
+	}
+	else CommonClass->GetPopUpImage();*/
+	//ImagePopUp->SetBrushFromTexture();
+	
 }
 
 FReply UActorSpawnerWidget::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
 	if(InMouseEvent.IsMouseButtonDown(EKeys::LeftMouseButton))
 	{
-		SpawnedActor = GetWorld()->SpawnActor<AActor>(SpawnerClass);
+		FActorSpawnParameters param;
+		SpawnedActor = GetWorld()->SpawnActor<AActor>(SpawnerClass,param); // TODO not at an Actor Location
+		//SpawnedActor->SetActorLocation(FVector(1000,1000,1000));
 		UWidgetBlueprintLibrary::SetInputMode_GameAndUIEx(PlayerController);
 		PlayerController->SetShowMouseCursor(true);
 	}

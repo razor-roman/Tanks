@@ -57,6 +57,9 @@ protected:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<ACannon> CannonClass;
 	
+	UPROPERTY(EditAnywhere)
+	UTexture2D* PopUpPic;
+	
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -82,7 +85,7 @@ public:
 	void RotatePawn(float DeltaTime);
 	void Fire();
 	void SetupCannon(TSubclassOf<ACannon> cannon);
-	
+	UTexture2D* GetPopUpImage(){return PopUpPic;}
 	UFUNCTION()
 	void RotateTurretTo(FVector TargetPosition);
 protected:

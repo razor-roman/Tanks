@@ -12,16 +12,7 @@ AMyHUD::AMyHUD()
 
 void AMyHUD::BeginPlay()
 {
-	Super::BeginPlay();
-	if(GetWorld())
-	{
-		APlayerController* PC = GetWorld()->GetFirstPlayerController();
-		if(PC)
-		{
-			//UWidgetBlueprintLibrary::SetInputMode_GameAndUIEx(PC,nullptr,EMouseLockMode::DoNotLock,false);
-			//PC->bShowMouseCursor = true;
-		}
-	}
+	Super::BeginPlay();	
 }
 
 UUserWidget* AMyHUD::UseWidget(EWidgetID widgetID, bool RemovePrevious,int32 ZOrder)
